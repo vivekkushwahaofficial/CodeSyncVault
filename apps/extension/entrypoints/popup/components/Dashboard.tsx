@@ -5,34 +5,22 @@ import {
   type GithubSettings,
 } from "../../../src/features/github/github-auth/github-storage";
 
+const SUPPORTED_PLATFORMS = ["LeetCode", "GeeksforGeeks", "HackerRank"];
 
 export default function Dashboard() {
-
-  const [settings, setSettings] =
-    useState<GithubSettings | null>(null);
-
-
+  const [settings, setSettings] = useState<GithubSettings | null>(null);
 
   useEffect(() => {
-
     async function loadSettings() {
-
-      const githubSettings =
-        await getGithubSettings();
+      const githubSettings = await getGithubSettings();
 
       setSettings(githubSettings);
-
     }
 
-
     loadSettings();
-
   }, []);
 
-
-
   return (
-
     <div
       style={{
         width: "340px",
@@ -40,7 +28,6 @@ export default function Dashboard() {
         fontFamily: "Arial, sans-serif",
       }}
     >
-
       <h2
         style={{
           margin: 0,
@@ -48,8 +35,6 @@ export default function Dashboard() {
       >
         🚀 CodeVault
       </h2>
-
-
 
       <div
         style={{
@@ -60,7 +45,6 @@ export default function Dashboard() {
           border: "1px solid #374151",
         }}
       >
-
         <strong
           style={{
             color: "#22c55e",
@@ -68,17 +52,13 @@ export default function Dashboard() {
         >
           🟢 Ready to Sync
         </strong>
-
       </div>
-
-
 
       <div
         style={{
           marginTop: "20px",
         }}
       >
-
         <p
           style={{
             color: "#9ca3af",
@@ -88,23 +68,14 @@ export default function Dashboard() {
           GitHub
         </p>
 
-
-        <strong>
-          {settings?.owner ?? "Not connected"}
-        </strong>
-
-
+        <strong>{settings?.owner ?? "Not connected"}</strong>
       </div>
-
-
-
 
       <div
         style={{
           marginTop: "18px",
         }}
       >
-
         <p
           style={{
             color: "#9ca3af",
@@ -114,23 +85,14 @@ export default function Dashboard() {
           Repository
         </p>
 
-
-        <strong>
-          {settings?.repo ?? "No repository selected"}
-        </strong>
-
-
+        <strong>{settings?.repo ?? "No repository selected"}</strong>
       </div>
-
-
-
 
       <div
         style={{
           marginTop: "18px",
         }}
       >
-
         <p
           style={{
             color: "#9ca3af",
@@ -140,16 +102,8 @@ export default function Dashboard() {
           Branch
         </p>
 
-
-        <strong>
-          {settings?.branch ?? "Not configured"}
-        </strong>
-
-
+        <strong>{settings?.branch ?? "Not configured"}</strong>
       </div>
-
-
-
 
       <hr
         style={{
@@ -159,33 +113,29 @@ export default function Dashboard() {
         }}
       />
 
-
-
       <div
         style={{
           textAlign: "center",
         }}
       >
-
         <p
           style={{
             marginBottom: "6px",
           }}
         >
-          ⏳ Waiting for accepted
+          ⏳ Waiting for accepted solutions...
         </p>
 
-
-        <p>
-          LeetCode submissions...
+        <p
+          style={{
+            margin: 0,
+            color: "#9ca3af",
+            fontSize: "12px",
+          }}
+        >
+          {SUPPORTED_PLATFORMS.join(" • ")}
         </p>
-
-
       </div>
-
-
     </div>
-
   );
-
 }
