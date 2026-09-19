@@ -2,7 +2,7 @@
 
 > Automatically detect, organize, and synchronize accepted coding solutions from supported coding platforms to GitHub.
 
-![Version](https://img.shields.io/badge/version-v1.4.0-blue)
+![Version](https://img.shields.io/badge/version-v1.4.1-blue)
 ![Status](https://img.shields.io/badge/status-Active-success)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![Platforms](https://img.shields.io/badge/platforms-3-orange)
@@ -137,7 +137,7 @@ No manual README editing is required.
 
 ## 🔥 Coding Activity Heatmap
 
-CodeVault v1.4.0 introduces an automatically generated GitHub-compatible coding activity heatmap.
+CodeVault v1.4.1 introduces an automatically generated GitHub-compatible coding activity heatmap.
 
 Generated at:
 
@@ -499,11 +499,11 @@ cd apps/backend
 
 # 📊 Current Release
 
-## CodeVault v1.4.0
+## CodeVault v1.4.1
 
 ### Coding Activity Heatmap
 
-v1.4.0 introduces:
+v1.4.1 introduces:
 
 * 365-day coding activity heatmap
 * Automatic solved-date processing
