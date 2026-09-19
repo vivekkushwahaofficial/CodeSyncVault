@@ -1,229 +1,308 @@
 # 🚀 CodeVault
 
-> Automatically detect, organize, and sync your accepted coding solutions from coding platforms to GitHub.
+> Automatically detect, organize, and synchronize accepted coding solutions from supported coding platforms to GitHub.
 
-![Version](https://img.shields.io/badge/version-v0.1.0-blue)
-![Status](https://img.shields.io/badge/status-MVP-success)
-![Platform](https://img.shields.io/badge/platform-LeetCode-orange)
-![License](https://img.shields.io/badge/license-MIT-green)
-
----
-
-# 📌 Overview
-
-CodeVault is an open-source browser extension that automatically captures your accepted coding solutions, organizes them into a clean repository structure, and synchronizes everything to GitHub.
-
-Instead of manually copying solutions, creating folders, writing README files, and committing changes, CodeVault handles the complete workflow automatically.
-
-Current MVP supports:
-
-- ✅ LeetCode
-- ✅ GitHub OAuth Authentication
-- ✅ Automatic Repository Sync
-- ✅ Automatic README Generation
-- ✅ Duplicate Submission Detection
-
-More platforms and advanced features are planned in future releases.
+![Version](https://img.shields.io/badge/version-v1.4.0-blue)
+![Status](https://img.shields.io/badge/status-Active-success)
+![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![Platforms](https://img.shields.io/badge/platforms-3-orange)
 
 ---
 
+## 📌 Overview
+
+CodeVault is an open-source browser extension that automatically captures accepted coding solutions, extracts their metadata, organizes them into a structured GitHub repository, and keeps your coding portfolio up to date.
+
+Instead of manually copying solutions, creating folders, generating documentation, and updating statistics, CodeVault automates the workflow after an accepted submission.
+
+### Currently Supported Platforms
+
+- 🟡 LeetCode
+- 🟢 GeeksforGeeks
+- 🔵 HackerRank
+
+---
+## 🚀 Install CodeVault
+
+[![Install from Chrome Web Store](https://img.shields.io/badge/Install-Chrome%20Web%20Store-blue?logo=googlechrome)](https://chromewebstore.google.com/detail/codevault/loigjljekeahnjccojnnkmagibghofbn)
+
+🌐 [Official Website](https://code-vault-website.vercel.app/)
+
+🔗 [LinkedIn](https://www.linkedin.com/company/codevault-tool/)
+
+---
 # ✨ Features
 
-## ✅ Automatic LeetCode Detection
+## 🔄 Automatic Solution Detection
 
-CodeVault automatically detects when your LeetCode submission is accepted.
+CodeVault detects accepted submissions on supported coding platforms.
 
-No buttons.
-No manual actions.
-
-Simply solve the problem and CodeVault does the rest.
+Simply solve and submit a problem normally. Once the submission is accepted, CodeVault processes the solution automatically.
 
 ---
 
-## ✅ Solution Extraction
+## 💻 Multi-Platform Support
 
-Automatically extracts your submitted solution from the accepted submission page.
+CodeVault currently supports:
 
-Currently supported:
-
-- Java
-- Python
-- C++
-
-Support for JavaScript, Go, Rust, and more is planned.
+| Platform | Status |
+| --- | --- |
+| LeetCode | ✅ Supported |
+| GeeksforGeeks | ✅ Supported |
+| HackerRank | ✅ Supported |
+| Codeforces | 🚧 Planned |
+| CodeChef | 🚧 Planned |
+| AtCoder | 🚧 Planned |
 
 ---
 
-## ✅ Problem Metadata Extraction
+## 📦 Solution Extraction
 
-Automatically collects metadata including:
+CodeVault automatically extracts submitted source code from accepted solutions.
 
-- Problem Title
+Supported languages depend on the platform and detector implementation.
+
+The repository structure is designed to support multiple programming languages independently.
+
+---
+
+## 🧠 Metadata Extraction
+
+CodeVault extracts and maintains metadata such as:
+
+- Problem name
+- Problem slug
 - Difficulty
 - Platform
-- Programming Language
-- Submission URL
+- Programming language
+- Tags
+- Pattern
+- Topic
+- Time complexity
+- Space complexity
+- Solved date
+- Submission information
 
 ---
 
-## ✅ Problem Statement Extraction
+## 📄 Automatic README Generation
 
-Automatically extracts the complete problem statement and stores it inside a beautifully formatted README.md.
-
----
-
-## ✅ Automatic README Generation
-
-Each solved problem gets its own README.
+Every synchronized solution can receive its own documentation.
 
 Example:
 
 ```text
-Interleaving String
+Two Sum
 
-Difficulty: Medium
+Difficulty: Easy
+Platform: LeetCode
+Language: Java
 
 Problem Statement
-
 ...
 
 Approach
-
 ...
 
 Complexity
+Time: O(n)
+Space: O(n)
+````
 
-...
+CodeVault also automatically generates a repository-level portfolio README.
+
+---
+
+## 📊 Portfolio Statistics
+
+The Repository Engine automatically generates coding statistics from the solution index.
+
+Statistics include:
+
+* 🏆 Total problems solved
+* 🔵 Basic problems
+* 🟢 Easy problems
+* 🟠 Medium problems
+* 🔴 Hard problems
+* 🌐 Platform statistics
+* 💻 Language statistics
+* 🧩 Pattern statistics
+* 📚 Topic statistics
+* 🕒 Recently solved problems
+* 🔥 Coding activity
+
+No manual README editing is required.
+
+---
+
+## 🔥 Coding Activity Heatmap
+
+CodeVault v1.4.0 introduces an automatically generated GitHub-compatible coding activity heatmap.
+
+Generated at:
+
+```
+.codevault/activity.svg
+```
+
+The heatmap represents coding activity across the latest 365 days.
+
+Activity intensity is deterministic:
+
+| Daily Solutions | Activity     |
+| --------------: | ------------ |
+|               0 | No activity  |
+|               1 | Light        |
+|               2 | Medium-light |
+|             3–4 | Medium       |
+|              5+ | Highest      |
+
+The heatmap is generated from solved-date information stored in:
+
+```
+.codevault/index.json
 ```
 
 ---
 
-## ✅ GitHub OAuth Authentication
+## 🔐 GitHub OAuth Authentication
 
-Secure authentication using GitHub OAuth.
+CodeVault uses GitHub OAuth authentication.
 
-No Personal Access Token (PAT) is required.
+Users do not need to manually create or manage a Personal Access Token for the normal synchronization workflow.
 
 ---
 
-## ✅ Automatic GitHub Sync
+## 🚀 Automatic GitHub Synchronization
 
-After every accepted submission, CodeVault automatically:
-
-- Creates folders
-- Generates README.md
-- Saves your solution
-- Creates a Git commit
-- Pushes everything to GitHub
-
-Example commit message:
+After an accepted submission, CodeVault can automatically:
 
 ```text
-feat(leetcode): Add Two Sum
+Accepted Submission
+        ↓
+Detect
+        ↓
+Extract Solution
+        ↓
+Extract Metadata
+        ↓
+Generate Documentation
+        ↓
+Build Repository Package
+        ↓
+Update Repository Index
+        ↓
+Generate Portfolio
+        ↓
+Generate Activity Heatmap
+        ↓
+Commit
+        ↓
+Push to GitHub
 ```
 
 ---
 
-## ✅ Duplicate Detection
+## 🛡️ Duplicate Detection
 
-CodeVault generates a unique fingerprint for every accepted submission.
+CodeVault prevents previously synchronized solutions from being committed again.
 
-Previously uploaded submissions are automatically skipped to prevent duplicate commits.
+A unique fingerprint is generated for synchronized solutions and checked against existing repository data.
 
 ---
 
-## ✅ Organized Repository Structure
+# 📁 Repository Organization
 
-Solutions are automatically organized by:
-
-- Platform
-- Difficulty
-- Problem Name
+Solutions are automatically organized by platform, language, difficulty, and problem.
 
 Example:
 
-```text
+```
 Repository
 │
-└── LeetCode
-    │
-    ├── easy
-    │   └── Two-Sum
-    │       ├── README.md
-    │       └── Solution.java
-    │
-    └── medium
-        └── Interleaving-String
-            ├── README.md
-            └── Solution.java
+├── LeetCode
+│   └── Java
+│       └── Easy
+│           └── Two-Sum
+│               ├── Solution.java
+│               └── README.md
+│
+├── GeeksforGeeks
+│   └── C++
+│       └── Basic
+│           └── Array-Problem
+│               ├── Solution.cpp
+│               └── README.md
+│
+└── HackerRank
+    └── Java
+        └── Easy
+            └── Java-Problem
+                ├── Solution.java
+                └── README.md
 ```
+
+The exact generated path can be configured and managed by the repository engine.
+
+---
+
+# 🧠 Repository Engine
+
+The CodeVault Repository Engine manages repository-level coding data and documentation.
+
+```text
+.codevault/
+├── index.json
+└── activity.svg
+```
+
+The solution index acts as the source of truth for repository statistics.
+
+The Repository Engine uses this information to generate:
+
+* Portfolio README
+* Difficulty statistics
+* Platform statistics
+* Language statistics
+* Pattern statistics
+* Topic statistics
+* Recently solved problems
+* Coding activity heatmap
 
 ---
 
 # ⚙️ How It Works
 
 ```text
-Solve Coding Problem
-
-        │
-
-        ▼
-
-Submit Accepted Solution
-
-        │
-
-        ▼
-
-CodeVault Detects Submission
-
-        │
-
-        ▼
-
-Extract Solution
-
-        │
-
-        ▼
-
-Extract Metadata
-
-        │
-
-        ▼
-
-Extract Problem Statement
-
-        │
-
-        ▼
-
-Generate README
-
-        │
-
-        ▼
-
-Build Solution Package
-
-        │
-
-        ▼
-
-Authenticate with GitHub
-
-        │
-
-        ▼
-
-Commit Files
-
-        │
-
-        ▼
-
-Push to Repository
+┌──────────────────────────┐
+│ Solve Coding Problem     │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│ Accepted Submission      │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│ CodeVault Detector       │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│ Extract Solution         │
+│ + Metadata               │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│ Repository Engine        │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│ Generate Files            │
+│ README + Index + Heatmap │
+└────────────┬─────────────┘
+             ↓
+┌──────────────────────────┐
+│ GitHub Synchronization   │
+└──────────────────────────┘
 ```
 
 ---
@@ -231,61 +310,30 @@ Push to Repository
 # 🏗️ Architecture
 
 ```text
-LeetCode
-
+Coding Platform
       │
-
       ▼
-
-Content Script
-
+Browser Extension
       │
-
-      ▼
-
-Metadata Extractor
-
+      ├── Platform Detector
       │
-
-      ▼
-
-Solution Extractor
-
+      ├── Metadata Extractor
       │
-
-      ▼
-
-Problem Statement Extractor
-
+      ├── Solution Extractor
       │
-
-      ▼
-
-README Generator
-
+      ├── Repository Engine
       │
-
-      ▼
-
-Background Service
-
+      ├── GitHub Sync
       │
-
-      ▼
-
-Spring Boot Backend
-
-      │
-
-      ▼
-
-GitHub REST API
-
-      │
-
-      ▼
-
-GitHub Repository
+      └── Settings
+              │
+              ▼
+        GitHub Repository
+              │
+              ├── Solutions
+              ├── .codevault/index.json
+              ├── .codevault/activity.svg
+              └── README.md
 ```
 
 ---
@@ -294,25 +342,40 @@ GitHub Repository
 
 ## Browser Extension
 
-- TypeScript
-- React
-- WXT Framework
-- Chrome Extension Manifest V3
+* TypeScript
+* React
+* WXT
+* Chrome Extension Manifest V3
 
 ## Backend
 
-- Java
-- Spring Boot
-- Spring Security
-- OAuth2
-- GitHub REST API
+* Java
+* Spring Boot
+* Spring Security
+* OAuth2
 
-## Development Tools
+## GitHub Integration
 
-- pnpm
-- TurboRepo
-- Vite
-- Git
+* GitHub OAuth
+* GitHub REST API
+* Octokit
+
+## Data & Architecture
+
+* Zustand
+* Zod
+* Dexie
+* TypeScript
+* Feature-based architecture
+
+## Development
+
+* pnpm
+* Turborepo
+* Vite
+* Biome
+* Git
+* GitHub
 
 ---
 
@@ -326,233 +389,285 @@ CodeVault
 │   │
 │   └── extension
 │       ├── entrypoints
-│       └── src
-│           ├── features
-│           │   ├── github
-│           │   ├── platforms
-│           │   ├── extractor
-│           │   ├── sync
-│           │   └── settings
-│           │
-│           ├── shared
-│           └── core
+│       │
+│       ├── src
+│       │   ├── core
+│       │   ├── features
+│       │   │   ├── github
+│       │   │   ├── platforms
+│       │   │   ├── repository-engine
+│       │   │   ├── settings
+│       │   │   └── ...
+│       │   │
+│       │   └── shared
+│       │
+│       └── wxt.config.ts
 │
 ├── packages
 │
-└── docs
+├── docs
+│
+└── scripts
 ```
 
 ---
 
 # 📥 Installation
 
-## Chrome Extension
+## Development Installation
 
-Coming soon on:
-
-- Chrome Web Store
-- Microsoft Edge Add-ons
-- Firefox Add-ons
-
----
-
-## Manual Installation
-
-1. Clone the repository.
+Clone the repository:
 
 ```bash
 git clone https://github.com/vivekkushwahaofficial/CodeVault.git
 ```
 
-2. Install dependencies.
+Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-3. Build the extension.
+Build the extension:
 
 ```bash
-pnpm --dir apps/extension build
+pnpm build
 ```
 
-4. Open Chrome.
+The production extension will be generated under:
 
-```text
+```
+apps/extension/.output/chrome-mv3/
+```
+
+---
+
+## Load the Extension in Chrome
+
+1. Open:
+
+```
 chrome://extensions
 ```
 
-5. Enable Developer Mode.
+2. Enable **Developer mode**.
 
-6. Click **Load unpacked**.
+3. Click **Load unpacked**.
 
-7. Select the generated extension folder.
+4. Select:
+
+```text
+apps/extension/.output/chrome-mv3
+```
+
+5. Open CodeVault.
+
+6. Connect your GitHub account.
+
+7. Solve an accepted problem on a supported platform.
 
 ---
 
-# 🛠️ Development Setup
+# 🛠️ Development
 
-Clone the repository.
-
-```bash
-git clone https://github.com/vivekkushwahaofficial/CodeVault.git
-```
-
-Install dependencies.
+Install dependencies:
 
 ```bash
 pnpm install
 ```
 
-Run the extension.
+Run the extension in development mode:
 
 ```bash
 pnpm --dir apps/extension dev
 ```
 
-Build the extension.
+Build the extension:
 
 ```bash
-pnpm --dir apps/extension build
+pnpm build
 ```
 
-Run the backend.
+Run the backend:
 
 ```bash
 cd apps/backend
-
 ./mvnw spring-boot:run
 ```
 
 ---
 
-# 📌 Current MVP Status
+# 📊 Current Release
 
-## Supported
+## CodeVault v1.4.0
 
-- ✅ LeetCode
-- ✅ Java
-- ✅ Python
-- ✅ C++
-- ✅ JavaScript
-- ✅ Go
-- ✅ Rust
-- ✅ GitHub OAuth
-- ✅ Automatic GitHub Sync
-- ✅ README Generation
-- ✅ Metadata Extraction
-- ✅ Problem Statement Extraction
-- ✅ Duplicate Detection
+### Coding Activity Heatmap
+
+v1.4.0 introduces:
+
+* 365-day coding activity heatmap
+* Automatic solved-date processing
+* Deterministic activity levels
+* `.codevault/activity.svg`
+* Improved repository portfolio generation
+* Improved coding activity statistics
+* Automatic heatmap regeneration
+
+### Supported Platforms
+
+* LeetCode
+* GeeksforGeeks
+* HackerRank
+
 ---
 
 # 🚧 Roadmap
 
-## v0.2
+CodeVault is actively evolving.
 
-- GeeksforGeeks Support
-- Multiple Programming Languages
-- Better Settings Management
-- Repository Configuration
+## Platform Expansion
 
----
+Planned support includes:
 
-## v0.3
-
-- HackerRank Support
-- Codeforces Support
-- CodeChef Support
-- Coding Ninjas Support
+* Codeforces
+* CodeChef
+* AtCoder
+* Coding Ninjas
+* Additional coding platforms
 
 ---
 
-## v0.4
+## 🤖 AI-Powered Features
 
-- AI Pattern Detection
-- Automatic Topic Classification
-- Analytics Dashboard
-- Statistics Generator
+Planned capabilities include:
 
----
-
-## v0.5
-
-- Multiple GitHub Accounts
-- Multiple Repository Modes
-- Offline Sync
-- Background Queue
+* Automatic pattern detection
+* Topic classification
+* Solution explanations
+* Coding notes generation
+* Interview questions for solved problems
+* Complexity analysis
+* Personalized coding insights
 
 ---
 
-## v1.0
+## 📊 Analytics
 
-- Multi-platform Solution Manager
-- AI-powered Insights
-- Portfolio Website
-- Revision Planner
-- Browser Store Release
+Future versions may include:
+
+* Detailed coding analytics
+* Platform comparison
+* Difficulty distribution
+* Pattern progress
+* Topic weaknesses
+* Language usage
+* Coding streaks
+* Progress insights
+
+---
+
+## 🔄 Revision System
+
+Future versions will introduce intelligent revision capabilities including:
+
+* Revision reminders
+* Spaced repetition
+* Problem revisit tracking
+* Weak-topic identification
+* Personalized revision plans
+
+---
+
+## 🌐 Developer Portfolio
+
+CodeVault is evolving toward a complete developer portfolio system.
+
+Future capabilities include:
+
+* Coding profile
+* Solution showcase
+* Coding statistics
+* Activity heatmap
+* Achievements
+* GitHub integration
+* Portfolio generation
 
 ---
 
 # 🤝 Contributing
 
-Contributions are always welcome.
+Contributions are welcome.
 
 You can contribute by:
 
-- Reporting bugs
-- Suggesting features
-- Improving documentation
-- Opening pull requests
+* Reporting bugs
+* Suggesting features
+* Improving documentation
+* Adding platform support
+* Improving detectors
+* Improving repository generation
+* Opening pull requests
 
-Create a new branch.
+Create a feature branch:
 
 ```bash
 git checkout -b feature/my-feature
 ```
 
-Commit your changes.
+Commit your changes:
 
 ```bash
 git commit -m "feat: add new feature"
 ```
 
-Push your branch.
+Push your branch:
 
 ```bash
 git push origin feature/my-feature
 ```
 
-Finally, open a Pull Request.
+Then open a Pull Request.
 
 ---
 
 # 📄 License
 
-This project is licensed under the Apache License 2.0.
+CodeVault is licensed under the **Apache License 2.0**.
+
+See the `LICENSE` file for details.
 
 ---
 
-# ⭐ Support
+# 🐞 Feedback & Support
 
-If you find CodeVault useful, please consider giving the repository a ⭐.
+Found a bug or have a feature request?
 
-It helps the project grow and motivates future development.
+Open an issue in the CodeVault repository.
+
+⭐ If you find CodeVault useful, consider starring the repository.
 
 ---
 
 # 🌟 Vision
 
-CodeVault aims to become the ultimate coding solution management platform.
+CodeVault aims to become a complete coding solution management and developer productivity platform.
 
-In the future, developers will be able to:
+The long-term vision is to allow developers to:
 
-- Automatically sync solutions from multiple coding platforms
-- Organize solutions by difficulty, topic, pattern, and language
-- Track coding progress and analytics
-- Generate developer portfolios
-- Receive AI-powered insights and revision plans
-- Maintain a complete coding journey with zero manual effort
+* Solve problems on their preferred coding platforms.
+* Automatically synchronize accepted solutions.
+* Organize solutions without manual effort.
+* Track coding progress.
+* Analyze strengths and weaknesses.
+* Maintain a professional coding portfolio.
+* Receive AI-powered insights.
+* Build a complete history of their coding journey.
+
+The goal is simple:
+
+> **Spend less time managing solutions and more time solving problems.**
 
 ---
 
 Built with ❤️ for developers who love solving problems, not managing repositories.
+
