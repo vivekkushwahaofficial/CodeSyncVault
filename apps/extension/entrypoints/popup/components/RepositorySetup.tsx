@@ -189,7 +189,7 @@ export default function RepositorySetup({
           description:
             "Repository created by CodeVault",
 
-          private: true,
+          private: false,
 
         });
 
