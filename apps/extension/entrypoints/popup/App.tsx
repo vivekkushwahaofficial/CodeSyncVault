@@ -41,9 +41,14 @@ export default function App() {
     const startedAt = Date.now();
 
     const intervalId = window.setInterval(() => {
-      const elapsedSeconds = Math.floor((Date.now() - startedAt) / 1000);
+      const elapsedSeconds = Math.floor(
+        (Date.now() - startedAt) / 1000,
+      );
 
-      const remaining = Math.max(BACKEND_WAIT_SECONDS - elapsedSeconds, 0);
+      const remaining = Math.max(
+        BACKEND_WAIT_SECONDS - elapsedSeconds,
+        0,
+      );
 
       setRemainingSeconds(remaining);
     }, 250);
@@ -55,7 +60,9 @@ export default function App() {
 
   async function connectGithub() {
     if (connectingGithub) {
-      console.log("[CodeVault] GitHub connection already in progress.");
+      console.log(
+        "[CodeVault] GitHub connection already in progress.",
+      );
 
       return;
     }
@@ -68,7 +75,10 @@ export default function App() {
 
       setGithubConnected(true);
     } catch (error) {
-      console.error("[CodeVault] GitHub connection failed:", error);
+      console.error(
+        "[CodeVault] GitHub connection failed:",
+        error,
+      );
     } finally {
       setConnectingGithub(false);
       setRemainingSeconds(BACKEND_WAIT_SECONDS);
@@ -76,7 +86,9 @@ export default function App() {
   }
 
   const progressPercent = Math.min(
-    ((BACKEND_WAIT_SECONDS - remainingSeconds) / BACKEND_WAIT_SECONDS) * 100,
+    ((BACKEND_WAIT_SECONDS - remainingSeconds) /
+      BACKEND_WAIT_SECONDS) *
+      100,
     100,
   );
 
@@ -85,6 +97,8 @@ export default function App() {
       <div
         style={{
           width: "340px",
+          boxSizing: "border-box",
+          minHeight: "100vh",
           padding: "20px",
           fontFamily: "Arial, sans-serif",
         }}
@@ -99,26 +113,44 @@ export default function App() {
       <div
         style={{
           width: "340px",
+          boxSizing: "border-box",
+          minHeight: "100vh",
           padding: "20px",
           fontFamily: "Arial, sans-serif",
         }}
       >
-        <h2>🚀 Welcome to CodeVault</h2>
+        <h2
+          style={{
+            margin: "0 0 16px",
+            fontSize: "20px",
+          }}
+        >
+          🚀 Welcome to CodeVault
+        </h2>
 
         {!connectingGithub ? (
           <>
-            <p>Connect your GitHub account to continue.</p>
+            <p
+              style={{
+                margin: "0 0 16px",
+                fontSize: "13px",
+              }}
+            >
+              Connect your GitHub account to continue.
+            </p>
 
             <button
               onClick={connectGithub}
               style={{
                 width: "100%",
-                padding: "12px",
+                height: "40px",
+                padding: "0 12px",
                 border: "none",
                 borderRadius: "10px",
                 background: "#2563eb",
                 color: "white",
                 cursor: "pointer",
+                boxSizing: "border-box",
               }}
             >
               Connect GitHub
@@ -127,6 +159,8 @@ export default function App() {
         ) : (
           <div
             style={{
+              width: "100%",
+              boxSizing: "border-box",
               marginTop: "16px",
               padding: "16px",
               borderRadius: "12px",
@@ -151,8 +185,9 @@ export default function App() {
                 lineHeight: 1.5,
               }}
             >
-              CodeVault is starting its backend. This can take up to about 60
-              seconds when the server is waking up.
+              CodeVault is starting its backend. This can
+              take up to about 60 seconds when the server is
+              waking up.
             </p>
 
             <div
@@ -224,7 +259,9 @@ export default function App() {
   if (!repositoryConfigured) {
     return (
       <RepositorySetup
-        onRepositoryConfigured={() => setRepositoryConfigured(true)}
+        onRepositoryConfigured={() =>
+          setRepositoryConfigured(true)
+        }
       />
     );
   }

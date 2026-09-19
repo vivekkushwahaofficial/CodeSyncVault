@@ -5,14 +5,43 @@ import {
   type GithubSettings,
 } from "../../../src/features/github/github-auth/github-storage";
 
-const SUPPORTED_PLATFORMS = ["LeetCode", "GeeksforGeeks", "HackerRank"];
+import {
+  loadStreakStats,
+} from "../../../src/features/streak/streak-service";
+
+import type {
+  StreakStats,
+} from "../../../src/features/streak/streak-types";
+
+import StreakPage from "../pages/StreakPage";
+
+const SUPPORTED_PLATFORMS = [
+  "LeetCode",
+  "GeeksforGeeks",
+  "HackerRank",
+];
 
 export default function Dashboard() {
-  const [settings, setSettings] = useState<GithubSettings | null>(null);
+  const [settings, setSettings] =
+    useState<GithubSettings | null>(null);
+
+  const [streakStats, setStreakStats] =
+    useState<StreakStats>({
+      currentStreak: 0,
+      longestStreak: 0,
+      activeDays: 0,
+      totalSolutions: 0,
+      averageSolutionsPerActiveDay: 0,
+      activityDates: [],
+    });
+
+  const [showStreak, setShowStreak] =
+    useState(false);
 
   useEffect(() => {
     async function loadSettings() {
-      const githubSettings = await getGithubSettings();
+      const githubSettings =
+        await getGithubSettings();
 
       setSettings(githubSettings);
     }
@@ -20,10 +49,38 @@ export default function Dashboard() {
     loadSettings();
   }, []);
 
+  useEffect(() => {
+    async function loadStreak() {
+      try {
+        const stats =
+          await loadStreakStats();
+
+        setStreakStats(stats);
+      } catch (error) {
+        console.error(
+          "[CodeVault] Failed to load streak:",
+          error,
+        );
+      }
+    }
+
+    loadStreak();
+  }, []);
+
+  if (showStreak) {
+    return (
+      <StreakPage
+        stats={streakStats}
+        onBack={() => setShowStreak(false)}
+      />
+    );
+  }
+
   return (
     <div
       style={{
         width: "340px",
+        boxSizing: "border-box",
         padding: "20px",
         fontFamily: "Arial, sans-serif",
       }}
@@ -68,7 +125,9 @@ export default function Dashboard() {
           GitHub
         </p>
 
-        <strong>{settings?.owner ?? "Not connected"}</strong>
+        <strong>
+          {settings?.owner ?? "Not connected"}
+        </strong>
       </div>
 
       <div
@@ -85,7 +144,9 @@ export default function Dashboard() {
           Repository
         </p>
 
-        <strong>{settings?.repo ?? "No repository selected"}</strong>
+        <strong>
+          {settings?.repo ?? "No repository selected"}
+        </strong>
       </div>
 
       <div
@@ -102,8 +163,29 @@ export default function Dashboard() {
           Branch
         </p>
 
-        <strong>{settings?.branch ?? "Not configured"}</strong>
+        <strong>
+          {settings?.branch ?? "Not configured"}
+        </strong>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setShowStreak(true)}
+        style={{
+          width: "100%",
+          marginTop: "24px",
+          padding: "12px",
+          border: "none",
+          borderRadius: "10px",
+          background: "#1f2937",
+          color: "white",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: 600,
+        }}
+      >
+        🔥 View Coding Streak
+      </button>
 
       <hr
         style={{
