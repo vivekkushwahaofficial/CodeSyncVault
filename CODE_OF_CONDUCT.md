@@ -28,7 +28,7 @@ The following is not acceptable:
 
 ## Security
 
-Please report security vulnerabilities privately through the project's designated security-reporting channel rather than publicly disclosing them.
+Please report security vulnerabilities privately to the project maintainers rather than publicly disclosing them.
 
 Do not include passwords, tokens, API keys, or other secrets in issues, pull requests, or commits.
 

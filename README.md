@@ -124,6 +124,7 @@ Statistics include:
 * 🟢 Easy problems
 * 🟠 Medium problems
 * 🔴 Hard problems
+* 🔥 Coding streak
 * 🌐 Platform statistics
 * 💻 Language statistics
 * 🧩 Pattern statistics
@@ -137,7 +138,7 @@ No manual README editing is required.
 
 ## 🔥 Coding Activity Heatmap
 
-CodeVault v1.4.1 introduces an automatically generated GitHub-compatible coding activity heatmap.
+CodeVault automatically generates a GitHub-compatible coding activity heatmap.
 
 Generated at:
 
@@ -496,22 +497,18 @@ cd apps/backend
 ```
 
 ---
-
 # 📊 Current Release
 
 ## CodeVault v1.4.1
 
-### Coding Activity Heatmap
+### What's Updated
 
-v1.4.1 introduces:
+v1.4.1 includes:
 
-* 365-day coding activity heatmap
-* Automatic solved-date processing
-* Deterministic activity levels
-* `.codevault/activity.svg`
-* Improved repository portfolio generation
-* Improved coding activity statistics
-* Automatic heatmap regeneration
+* 🔥 Coding Streak tracking
+* 🔐 Improved GitHub connection and authentication
+* 📊 Improved extension dashboard
+* ⚙️ Improved repository setup flow
 
 ### Supported Platforms
 
@@ -561,7 +558,6 @@ Future versions may include:
 * Pattern progress
 * Topic weaknesses
 * Language usage
-* Coding streaks
 * Progress insights
 
 ---

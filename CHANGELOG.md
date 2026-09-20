@@ -2,6 +2,91 @@
 
 All notable changes to CodeVault are documented in this file.
 
+## [1.4.1] — Coding Streak
+
+### Added
+
+- Added Coding Streak tracking.
+
+### Improved
+
+- Improved GitHub connection and authentication.
+- Improved extension dashboard.
+- Improved repository setup flow.
+
+### Supported Platforms
+
+- LeetCode
+- GeeksforGeeks
+- HackerRank
+
+---
+
+## [1.4.0] — Coding Activity Heatmap
+
+### Added
+
+- Added GitHub-compatible coding activity heatmap.
+- Added 365-day coding activity tracking.
+- Added solved-date tracking for solutions.
+- Added automatic activity heatmap generation at `.codevault/activity.svg`.
+
+### Improved
+
+- Improved portfolio statistics generation.
+- Improved repository engine.
+- Improved coding activity statistics.
+- Improved automatic repository documentation updates.
+
+### Supported Platforms
+
+- LeetCode
+- GeeksforGeeks
+- HackerRank
+
+---
+
+## [1.3.2] — Complete Difficulty Statistics
+
+### Added
+
+- Added Basic difficulty statistics.
+- Added Basic difficulty progress tracking.
+- Added platform-aware portfolio statistics.
+- Added platform information to recently solved problems.
+
+### Improved
+
+- Improved automatic portfolio README generation.
+- Improved difficulty statistics.
+- Improved repository documentation.
+
+### Supported Platforms
+
+- LeetCode
+- GeeksforGeeks
+- HackerRank
+
+---
+
+## [1.3.1] — Repository Documentation
+
+### Improved
+
+- Improved repository documentation links.
+- Improved navigation between solution, pattern, topic, and repository documentation.
+- Improved generated README documentation.
+- Improved multi-language solution organization.
+- Continued automatic GitHub synchronization.
+
+### Supported Platforms
+
+- LeetCode
+- GeeksforGeeks
+- HackerRank
+
+---
+
 ## [1.2.0] — HackerRank Integration
 
 ### Added
@@ -84,6 +169,10 @@ All notable changes to CodeVault are documented in this file.
 
 ---
 
+[1.4.1]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.4.1
+[1.4.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.4.0
+[1.3.2]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.3.2
+[1.3.1]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.3.1
 [1.2.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.2.0
 [1.1.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.1.0
 [1.0.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.0.0

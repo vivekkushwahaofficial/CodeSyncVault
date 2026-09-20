@@ -47,13 +47,15 @@ Forks and derivative works of CodeVault are permitted under the applicable sourc
 
 Forks and derivative works may identify CodeVault as their upstream or original project when such identification is accurate.
 
-However, independent forks and derivative products should use their own names, logos, and visual identities.
+Independent forks and derivative products should use their own names, logos, and visual identities.
 
 A fork or derivative work must not represent itself as an official CodeVault release unless it has been expressly authorized by the CodeVault project.
 
+Modifying or redistributing CodeVault source code under the Apache License 2.0 does not by itself grant permission to use the CodeVault Marks as the branding of the modified or redistributed work.
+
 ## 6. Official CodeVault Releases
 
-Only software distributed through channels designated by the CodeVault project may be represented as an official CodeVault release.
+Only software designated and distributed by the CodeVault project through its official release channels may be represented as an official CodeVault release.
 
 Contributors, forks, and derivative projects must not imply that their work has been reviewed, approved, sponsored, endorsed, or officially maintained by CodeVault unless expressly authorized.
 
@@ -79,5 +81,6 @@ Nothing in this policy is intended to restrict, modify, or override any rights e
 
 ---
 
-**CodeVault**  
+**CodeVault**
+
 Copyright © 2026 Vivek Kumar

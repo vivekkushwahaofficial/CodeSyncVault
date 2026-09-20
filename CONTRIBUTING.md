@@ -11,6 +11,8 @@ Contributions should generally follow this workflow:
 ```text
 Fork
   ↓
+Sync with develop
+  ↓
 Create Branch
   ↓
 Implement Changes
@@ -21,12 +23,12 @@ Commit
   ↓
 Push
   ↓
-Open Pull Request
+Open Pull Request → develop
   ↓
 Code Review
   ↓
 Merge
-```
+````
 
 ## 1. Fork the Repository
 
@@ -34,22 +36,31 @@ Create a fork of the official CodeVault repository and use your fork for develop
 
 Forks are intended to facilitate development, experimentation, review, and contributions to the CodeVault project.
 
+Before creating a working branch, make sure your local repository is up to date with the project's `develop` branch.
+
 ## 2. Create a Branch
 
-Create a dedicated branch for each feature, fix, or documentation change.
+Create a dedicated branch **from `develop`** for each feature, fix, test, or documentation change.
 
 Examples:
 
 ```text
 feature/github-sync
+
 feature/gfg-detector
+
 fix/oauth-flow
+
 fix/submission-detection
+
 docs/installation
+
 test/leetcode-adapter
 ```
 
 Avoid making unrelated changes in the same branch.
+
+Contributors should generally open pull requests against the `develop` branch unless the maintainers specify otherwise.
 
 ## 3. Development Guidelines
 
@@ -81,9 +92,13 @@ Examples:
 
 ```text
 feat(leetcode): improve submission detection
+
 feat(github): add repository validation
+
 fix(oauth): handle authorization failure
+
 test(gfg): add detector coverage
+
 docs: update installation guide
 ```
 
@@ -96,6 +111,8 @@ A pull request should:
 * include relevant testing information;
 * reference related issues where applicable; and
 * remain limited to the intended scope.
+
+Unless otherwise specified by the maintainers, pull requests should target the `develop` branch.
 
 Maintainers may request additional changes before a pull request is accepted.
 
@@ -120,7 +137,7 @@ Review may consider:
 
 Security vulnerabilities should not be disclosed through public issues or pull requests.
 
-Please use the project's designated private security-reporting mechanism when reporting a vulnerability.
+Please report security vulnerabilities privately to the project maintainers rather than publicly disclosing them.
 
 Do not include secrets, credentials, access tokens, or private information in issues, commits, or pull requests.
 
