@@ -1,6 +1,6 @@
 {
   "name": "codevault",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "description": "CodeVault - Automatic coding solution manager for LeetCode, GeeksforGeeks, and more.",
   "license": "Apache-2.0",

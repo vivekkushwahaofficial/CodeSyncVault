@@ -1,16 +1,27 @@
 import { exchangeGithubCode } from "../api/github-token";
+import { waitForBackend } from "../api/backend-health";
 import { saveGithubSettings } from "./github-storage";
 
 const GITHUB_CLIENT_ID =
   "Ov23liPu0u6Ux2Q6GgRS";
 
-export async function authenticateGithub() {
+let authInFlight: Promise<string> | null = null;
 
+async function authenticateGithubInternal(): Promise<string> {
   console.log(
-    "[CodeVault] Starting GitHub OAuth..."
+    "[CodeVault] Starting GitHub connection..."
   );
 
   try {
+    console.log(
+      "[CodeVault] Checking backend availability..."
+    );
+
+    await waitForBackend();
+
+    console.log(
+      "[CodeVault] Backend is ready."
+    );
 
     const redirectUri =
       browser.identity.getRedirectURL();
@@ -39,38 +50,29 @@ export async function authenticateGithub() {
       githubUrl.toString();
 
     console.log(
-      "[CodeVault] Starting web auth flow..."
+      "[CodeVault] Starting GitHub OAuth..."
     );
 
     let responseUrl: string | undefined;
 
     try {
-
       responseUrl =
         await browser.identity.launchWebAuthFlow({
-
           url: oauthUrl,
-
           interactive: true,
-
         });
-
     } catch (oauthError) {
-
-console.error(
-  "[CodeVault] GitHub OAuth request failed."
-);
+      console.error(
+        "[CodeVault] GitHub OAuth request failed."
+      );
 
       throw oauthError;
-
     }
 
     if (!responseUrl) {
-
       throw new Error(
         "GitHub did not return response URL"
       );
-
     }
 
     const response =
@@ -83,19 +85,15 @@ console.error(
       response.searchParams.get("error");
 
     if (githubError) {
-
       throw new Error(
         `GitHub OAuth error: ${githubError}`
       );
-
     }
 
     if (!code) {
-
       throw new Error(
         "Authorization code not found"
       );
-
     }
 
     console.log(
@@ -106,19 +104,14 @@ console.error(
       await exchangeGithubCode(code);
 
     console.log(
-  "[CodeVault] GitHub authentication successful."
-  );
+      "[CodeVault] GitHub authentication successful."
+    );
 
     await saveGithubSettings({
-
       owner: "",
-
       repo: "",
-
       branch: "main",
-
       token: accessToken,
-
     });
 
     console.log(
@@ -126,11 +119,10 @@ console.error(
     );
 
     return accessToken;
-
   } catch (error) {
-
     console.error(
       "[CodeVault] GitHub OAuth failed:",
+      error
     );
 
     alert(
@@ -140,7 +132,22 @@ console.error(
     );
 
     throw error;
+  }
+}
 
+export function authenticateGithub(): Promise<string> {
+  if (authInFlight) {
+    console.log(
+      "[CodeVault] GitHub authentication already in progress."
+    );
+
+    return authInFlight;
   }
 
+  authInFlight =
+    authenticateGithubInternal().finally(() => {
+      authInFlight = null;
+    });
+
+  return authInFlight;
 }

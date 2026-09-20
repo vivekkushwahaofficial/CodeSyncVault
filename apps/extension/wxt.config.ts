@@ -10,9 +10,9 @@ export default defineConfig({
 
     short_name: "CodeVault",
 
-    version: "1.4.0",
+    version: "1.4.1",
 
-    description: "Automatically extract and sync coding solutions to GitHub.",
+    description: "Automatically detect, organize, and sync your accepted coding solutions from LeetCode, GeeksforGeeks, and HackerRank to GitHub.",
 
     ...(isChromeWebStoreBuild
       ? {}
