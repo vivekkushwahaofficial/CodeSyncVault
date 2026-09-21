@@ -2,7 +2,7 @@
 
 > Automatically detect, organize, and synchronize accepted coding solutions from supported coding platforms to GitHub.
 
-![Version](https://img.shields.io/badge/version-v1.4.1-blue)
+![Version](https://img.shields.io/badge/version-v1.4.2-blue)
 ![Status](https://img.shields.io/badge/status-Active-success)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![Platforms](https://img.shields.io/badge/platforms-3-orange)
@@ -499,11 +499,11 @@ cd apps/backend
 ---
 # 📊 Current Release
 
-## CodeSyncVault v1.4.1
+## CodeSyncVault v1.4.2
 
 ### What's Updated
 
-v1.4.1 includes:
+v1.4.2 includes:
 
 * 🔥 Coding Streak tracking
 * 🔐 Improved GitHub connection and authentication

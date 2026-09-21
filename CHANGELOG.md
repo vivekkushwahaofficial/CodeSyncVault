@@ -1,6 +1,27 @@
 # Changelog
 
-All notable changes to CodeVault are documented in this file.
+All notable changes to CodeSyncVault are documented in this file.
+
+## [1.4.2] — CodeSyncVault Branding & Extension Update
+
+### Added
+
+- Added updated CodeSyncVault extension icons.
+- Added updated CodeSyncVault website logo.
+
+### Improved
+
+- Updated extension version to 1.4.2.
+- Improved Chrome Web Store release packaging.
+- Updated current project version references.
+
+### Supported Platforms
+
+- LeetCode
+- GeeksforGeeks
+- HackerRank
+
+---
 
 ## [1.4.1] — Coding Streak
 
@@ -169,10 +190,18 @@ All notable changes to CodeVault are documented in this file.
 
 ---
 
-[1.4.1]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.4.1
-[1.4.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.4.0
-[1.3.2]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.3.2
-[1.3.1]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.3.1
-[1.2.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.2.0
-[1.1.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.1.0
-[1.0.0]: https://github.com/vivekkushwahaofficial/CodeVault/releases/tag/v1.0.0
+[1.4.2]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.4.2
+
+[1.4.1]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.4.1
+
+[1.4.0]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.4.0
+
+[1.3.2]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.3.2
+
+[1.3.1]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.3.1
+
+[1.2.0]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.2.0
+
+[1.1.0]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.1.0
+
+[1.0.0]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.0.0
