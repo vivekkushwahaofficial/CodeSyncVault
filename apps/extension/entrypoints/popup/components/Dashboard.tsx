@@ -58,7 +58,7 @@ export default function Dashboard() {
         setStreakStats(stats);
       } catch (error) {
         console.error(
-          "[CodeVault] Failed to load streak:",
+          "[CodeSyncVault] Failed to load streak:",
           error,
         );
       }
@@ -90,7 +90,7 @@ export default function Dashboard() {
           margin: 0,
         }}
       >
-        🚀 CodeVault
+        🚀 CodeSyncVault
       </h2>
 
       <div

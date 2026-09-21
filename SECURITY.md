@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Security updates are generally provided for the latest release of CodeVault.
+Security updates are generally provided for the latest release of CodeSyncVault.
 
 | Version | Supported |
 |---|---|
@@ -13,7 +13,7 @@ Security updates are generally provided for the latest release of CodeVault.
 
 Please do not disclose security vulnerabilities through public GitHub issues or pull requests.
 
-Security vulnerabilities should be reported privately to the CodeVault project maintainers.
+Security vulnerabilities should be reported privately to the CodeSyncVault project maintainers.
 
 When reporting a vulnerability, please provide:
 
@@ -35,4 +35,4 @@ The maintainers may request additional information during the investigation.
 
 Security fixes may be released through the project's normal release process.
 
-Users should use the latest available CodeVault release whenever possible.
+Users should use the latest available CodeSyncVault release whenever possible.

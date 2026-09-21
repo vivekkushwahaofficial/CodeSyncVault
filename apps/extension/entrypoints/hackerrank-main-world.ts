@@ -171,7 +171,7 @@ function normalizeHackerRankLanguage(
   }
 
   console.warn(
-    "[CodeVault] Unsupported HackerRank language:",
+    "[CodeSyncVault] Unsupported HackerRank language:",
     language,
   );
 
@@ -183,7 +183,7 @@ export default defineUnlistedScript(() => {
     window.__codevaultHackerRankInitialized
   ) {
     console.debug(
-      "[CodeVault] HackerRank bridge already initialized.",
+      "[CodeSyncVault] HackerRank bridge already initialized.",
     );
 
     return;
@@ -193,7 +193,7 @@ export default defineUnlistedScript(() => {
     true;
 
   console.log(
-    "[CodeVault] HackerRank MAIN WORLD bridge initialized.",
+    "[CodeSyncVault] HackerRank MAIN WORLD bridge initialized.",
   );
 
   const OriginalXHR = XMLHttpRequest;
@@ -427,7 +427,7 @@ export default defineUnlistedScript(() => {
     }
 
     console.log(
-      "[CodeVault] HackerRank submission response:",
+      "[CodeSyncVault] HackerRank submission response:",
       method,
       url,
       model,
@@ -477,12 +477,12 @@ export default defineUnlistedScript(() => {
       }
 
       console.log(
-        "[CodeVault] Submission created:",
+        "[CodeSyncVault] Submission created:",
         submissionId,
       );
 
       console.log(
-        "[CodeVault] Submission language:",
+        "[CodeSyncVault] Submission language:",
         language || "missing",
       );
 
@@ -509,7 +509,7 @@ export default defineUnlistedScript(() => {
         )
       ) {
         console.debug(
-          "[CodeVault] Accepted submission was not created in this page session:",
+          "[CodeSyncVault] Accepted submission was not created in this page session:",
           submissionId,
         );
 
@@ -526,7 +526,7 @@ export default defineUnlistedScript(() => {
       );
 
       console.log(
-        "[CodeVault] HackerRank submission ACCEPTED:",
+        "[CodeSyncVault] HackerRank submission ACCEPTED:",
         submissionId,
       );
 
@@ -579,7 +579,7 @@ export default defineUnlistedScript(() => {
        */
       if (!language) {
         console.error(
-          "[CodeVault] Accepted HackerRank submission has no supported language. Sync skipped.",
+          "[CodeSyncVault] Accepted HackerRank submission has no supported language. Sync skipped.",
           {
             submissionId,
             rawLanguage:
@@ -600,18 +600,18 @@ export default defineUnlistedScript(() => {
         );
 
       console.log(
-        "[CodeVault] HackerRank difficulty:",
+        "[CodeSyncVault] HackerRank difficulty:",
         difficulty,
       );
 
       console.log(
-        "[CodeVault] HackerRank normalized language:",
+        "[CodeSyncVault] HackerRank normalized language:",
         language,
       );
 
       /**
        * Send normalized accepted submission
-       * to the CodeVault content script.
+       * to the CodeSyncVault content script.
        */
       window.postMessage(
         {
@@ -668,7 +668,7 @@ export default defineUnlistedScript(() => {
       );
 
       console.log(
-        "[CodeVault] Accepted submission event dispatched.",
+        "[CodeSyncVault] Accepted submission event dispatched.",
       );
     }
   }
@@ -786,7 +786,7 @@ export default defineUnlistedScript(() => {
   ): Promise<string | null> {
     if (!slug) {
       console.warn(
-        "[CodeVault] HackerRank challenge slug missing.",
+        "[CodeSyncVault] HackerRank challenge slug missing.",
       );
 
       return null;
@@ -797,7 +797,7 @@ export default defineUnlistedScript(() => {
 
     try {
       console.log(
-        "[CodeVault] Fetching challenge metadata:",
+        "[CodeSyncVault] Fetching challenge metadata:",
         endpoint,
       );
 
@@ -806,7 +806,7 @@ export default defineUnlistedScript(() => {
 
       if (!response.ok) {
         console.warn(
-          "[CodeVault] Challenge metadata request failed:",
+          "[CodeSyncVault] Challenge metadata request failed:",
           response.status,
           endpoint,
         );
@@ -823,7 +823,7 @@ export default defineUnlistedScript(() => {
       return difficulty || null;
     } catch (error) {
       console.warn(
-        "[CodeVault] Failed to fetch HackerRank difficulty:",
+        "[CodeSyncVault] Failed to fetch HackerRank difficulty:",
         error,
       );
 

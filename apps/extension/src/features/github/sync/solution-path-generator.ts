@@ -51,7 +51,7 @@ export interface SolutionMetadata {
 }
 
 /**
- * Canonical languages supported by CodeVault.
+ * Canonical languages supported by CodeSyncVault.
  */
 type NormalizedLanguage =
   | "Java"

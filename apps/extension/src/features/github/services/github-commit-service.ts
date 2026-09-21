@@ -6,13 +6,13 @@ import type {
 } from "../sync/types/solution-package";
 
 /**
- * Maximum number of times CodeVault will rebuild
+ * Maximum number of times CodeSyncVault will rebuild
  * the synchronization against a changed branch.
  */
 const MAX_SYNC_ATTEMPTS = 3;
 
 /**
- * Maximum number of times CodeVault will retry
+ * Maximum number of times CodeSyncVault will retry
  * updating the same GitHub reference.
  *
  * This handles GitHub's temporary ref propagation
@@ -43,7 +43,7 @@ type GithubApiError = {
  *
  * Buffer.from(content, "utf-8").toString("base64")
  *
- * CodeVault runs inside a browser extension, so
+ * CodeSyncVault runs inside a browser extension, so
  * Node.js Buffer is not available here.
  */
 function encodeBase64Utf8(
@@ -126,7 +126,7 @@ function waitBeforeRetry(
  * Empty repository handling:
  *
  * If GitHub reports that the Git repository is empty,
- * CodeVault initializes it through the Contents API.
+ * CodeSyncVault initializes it through the Contents API.
  *
  * After initialization, the existing Git Database
  * synchronization pipeline continues unchanged.
@@ -913,14 +913,14 @@ async function initializeEmptyRepository(
           file.path,
 
         message:
-          "chore(codevault): initialize repository",
+          "chore(codesyncvault): initialize repository",
 
         /*
          * Browser-safe UTF-8 Base64 encoding.
          *
          * IMPORTANT:
          *
-         * Do NOT use Buffer here because CodeVault
+         * Do NOT use Buffer here because CodeSyncVault
          * runs inside a browser extension.
          */
         content:

@@ -60,11 +60,11 @@ export function syncSolution(
       async () => {
 
         console.log(
-          "[CodeVault] 🔒 GitHub sync entered queue.",
+          "[CodeSyncVault] 🔒 GitHub sync entered queue.",
         );
 
         console.log(
-          "[CodeVault] 📦 Synchronizing:",
+          "[CodeSyncVault] 📦 Synchronizing:",
           {
             platform:
               solution.metadata.platform,
@@ -85,7 +85,7 @@ export function syncSolution(
         );
 
         console.log(
-          "[CodeVault] 🔓 GitHub sync completed.",
+          "[CodeSyncVault] 🔓 GitHub sync completed.",
         );
       },
     );
@@ -126,7 +126,7 @@ export function syncSolution(
       (error) => {
 
         console.error(
-          "[CodeVault] GitHub sync failed:",
+          "[CodeSyncVault] GitHub sync failed:",
           error,
         );
 

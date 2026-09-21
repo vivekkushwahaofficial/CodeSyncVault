@@ -11,6 +11,6 @@ export const githubConfig: GitHubConfig = {
 
     owner: "vivekkushwahaofficial",
 
-    repo: "CodeVault",
+    repo: "CodeSyncVault",
 
 };

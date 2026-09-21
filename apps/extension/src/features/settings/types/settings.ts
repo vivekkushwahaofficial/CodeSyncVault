@@ -1,6 +1,6 @@
 /**
  * Represents all user-configurable settings
- * for the CodeVault extension.
+ * for the CodeSyncVault extension.
  */
 export interface Settings {
 	/**

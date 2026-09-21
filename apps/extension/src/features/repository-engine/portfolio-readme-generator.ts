@@ -4,7 +4,7 @@ import type {
 } from "./types";
 
 /**
- * Generates the repository-level CodeVault portfolio README.
+ * Generates the repository-level CodeSyncVault portfolio README.
  *
  * The README is derived entirely from the repository index.
  * No statistics are hardcoded.
@@ -86,9 +86,9 @@ export function generatePortfolioReadme(
   return [
     "# ⚡ Coding Solutions Portfolio",
     "",
-    "> Automatically organized, analyzed, and updated by **CodeVault**.",
+    "> Automatically organized, analyzed, and updated by **CodeSyncVault**.",
     "",
-    "[![CodeVault](https://img.shields.io/badge/Powered%20by-CodeVault-6e40c9)](https://github.com/vivekkushwahaofficial/CodeVault)",
+    "[![CodeSyncVault](https://img.shields.io/badge/Powered%20by-CodeSyncVault-6e40c9)](https://github.com/vivekkushwahaofficial/CodeSyncVault)",
     "",
     "---",
     "",
@@ -114,7 +114,7 @@ export function generatePortfolioReadme(
     "",
     "## 🔥 Coding Activity",
     "",
-    "![CodeVault Coding Activity](.codevault/activity.svg)",
+    "![CodeSyncVault Coding Activity](.codevault/activity.svg)",
     "",
     "## 🧩 Pattern & Topic Index",
     "",
@@ -158,9 +158,9 @@ export function generatePortfolioReadme(
     "",
     "---",
     "",
-    "### 🤖 Powered by CodeVault",
+    "### 🤖 Powered by CodeSyncVault",
     "",
-    "This README is generated automatically from the CodeVault repository index.",
+    "This README is generated automatically from the CodeSyncVault repository index.",
     "",
   ].join("\n");
 }

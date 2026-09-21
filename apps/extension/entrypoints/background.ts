@@ -1,7 +1,7 @@
 export default defineBackground(() => {
 
   console.log(
-    "[CodeVault] Background service started."
+    "[CodeSyncVault] Background service started."
   );
 
 });

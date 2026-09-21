@@ -103,7 +103,7 @@ export function extractMetadata(
     getCurrentProblemSlug();
 
   console.log(
-    "[CodeVault] Extracting metadata for:",
+    "[CodeSyncVault] Extracting metadata for:",
     currentSlug,
   );
 
@@ -359,7 +359,7 @@ export function extractMetadata(
     );
 
   console.log(
-    "[CodeVault] LeetCode language:",
+    "[CodeSyncVault] LeetCode language:",
     language || "NOT FOUND",
   );
 
@@ -380,7 +380,7 @@ export function extractMetadata(
     );
 
   console.log(
-    "[CodeVault] LeetCode URL:",
+    "[CodeSyncVault] LeetCode URL:",
     url,
   );
 

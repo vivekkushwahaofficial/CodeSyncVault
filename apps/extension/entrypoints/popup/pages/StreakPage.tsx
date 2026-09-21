@@ -512,7 +512,7 @@ export default function StreakPage({
           fontSize: "8px",
         }}
       >
-        CodeVault • Coding Progress
+        CodeSyncVault • Coding Progress
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
-# Contributing to CodeVault
+# Contributing to CodeSyncVault
 
-Thank you for your interest in contributing to CodeVault.
+Thank you for your interest in contributing to CodeSyncVault.
 
-CodeVault welcomes contributions that improve the project's functionality, reliability, security, performance, documentation, and overall developer experience.
+CodeSyncVault welcomes contributions that improve the project's functionality, reliability, security, performance, documentation, and overall developer experience.
 
 ## Contribution Process
 
@@ -32,9 +32,9 @@ Merge
 
 ## 1. Fork the Repository
 
-Create a fork of the official CodeVault repository and use your fork for development.
+Create a fork of the official CodeSyncVault repository and use your fork for development.
 
-Forks are intended to facilitate development, experimentation, review, and contributions to the CodeVault project.
+Forks are intended to facilitate development, experimentation, review, and contributions to the CodeSyncVault project.
 
 Before creating a working branch, make sure your local repository is up to date with the project's `develop` branch.
 
@@ -120,7 +120,7 @@ Submission of a pull request does not guarantee acceptance or inclusion in the p
 
 ## 7. Code Review
 
-All contributions are subject to review by the CodeVault maintainers.
+All contributions are subject to review by the CodeSyncVault maintainers.
 
 Review may consider:
 
@@ -147,21 +147,21 @@ Changes that affect installation, configuration, functionality, APIs, architectu
 
 ## 10. Licensing
 
-CodeVault is currently distributed under the Apache License 2.0.
+CodeSyncVault is currently distributed under the Apache License 2.0.
 
 By submitting a contribution, you represent that:
 
 * you have the necessary rights to submit the contribution;
 * the contribution does not knowingly infringe the rights of another party; and
-* you understand that accepted contributions may be incorporated into CodeVault and distributed under the project's applicable licensing terms.
+* you understand that accepted contributions may be incorporated into CodeSyncVault and distributed under the project's applicable licensing terms.
 
 Contributors are responsible for ensuring that third-party materials included in a contribution are compatible with their intended use.
 
 ## 11. Trademarks and Branding
 
-The CodeVault name, logo, and associated branding are governed by the project's `TRADEMARKS.md`.
+The CodeSyncVault name, logo, and associated branding are governed by the project's `TRADEMARKS.md`.
 
-Contributing to CodeVault does not grant rights to use CodeVault branding for an independent product.
+Contributing to CodeSyncVault does not grant rights to use CodeSyncVault branding for an independent product.
 
 ## 12. Community Standards
 
@@ -171,13 +171,13 @@ Technical disagreements are welcome when communicated constructively. Harassment
 
 ## 13. Maintainer Discretion
 
-The CodeVault maintainers reserve the right to review, request changes to, accept, or decline contributions based on the project's technical, security, legal, and maintenance requirements.
+The CodeSyncVault maintainers reserve the right to review, request changes to, accept, or decline contributions based on the project's technical, security, legal, and maintenance requirements.
 
 ## 14. Thank You
 
-We appreciate the time and effort contributed by everyone who helps improve CodeVault.
+We appreciate the time and effort contributed by everyone who helps improve CodeSyncVault.
 
 ---
 
-**CodeVault**
+**CodeSyncVault**
 Copyright © 2026 Vivek Kumar

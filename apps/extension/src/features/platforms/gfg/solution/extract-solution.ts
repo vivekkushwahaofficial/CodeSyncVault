@@ -34,13 +34,13 @@ export async function extractSolution(
 
       if (code) {
         console.log(
-          "[CodeVault] GFG solution extracted:",
+          "[CodeSyncVault] GFG solution extracted:",
           code.length,
           "characters",
         );
       } else {
         console.log(
-          "[CodeVault] GFG solution not found.",
+          "[CodeSyncVault] GFG solution not found.",
         );
       }
 
@@ -72,7 +72,7 @@ export async function extractSolution(
       );
 
       console.log(
-        "[CodeVault] GFG solution extraction timed out.",
+        "[CodeSyncVault] GFG solution extraction timed out.",
       );
 
       resolve("");

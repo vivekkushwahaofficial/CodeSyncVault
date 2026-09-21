@@ -1,5 +1,5 @@
 /**
- * Supported programming languages returned by CodeVault.
+ * Supported programming languages returned by CodeSyncVault.
  */
 const LANGUAGE_PATTERNS: Array<{
   pattern: RegExp;
@@ -146,7 +146,7 @@ export function extractLeetCodeLanguage(
 }
 
 /**
- * Normalizes visible language text into CodeVault's
+ * Normalizes visible language text into CodeSyncVault's
  * canonical language names.
  */
 function normalizeLanguageText(

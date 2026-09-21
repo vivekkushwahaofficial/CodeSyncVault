@@ -11,16 +11,16 @@ import {
 import { PlatformFactory } from "../platforms/factory/platform-factory";
 
 /**
- * Coordinates the CodeVault content workflow.
+ * Coordinates the CodeSyncVault content workflow.
  */
 export class ContentOrchestrator {
 
   /**
-   * Starts the CodeVault content workflow.
+   * Starts the CodeSyncVault content workflow.
    */
   static async start(): Promise<void> {
     console.log(
-      "🚀 CodeVault: Content script started",
+      "🚀 CodeSyncVault: Content script started",
     );
 
     try {
@@ -47,20 +47,20 @@ export class ContentOrchestrator {
         );
 
       console.log(
-        "[CodeVault] Accepted:",
+        "[CodeSyncVault] Accepted:",
         accepted,
       );
 
       if (!accepted) {
         console.log(
-          "[CodeVault] Submission is NOT accepted.",
+          "[CodeSyncVault] Submission is NOT accepted.",
         );
 
         return;
       }
 
       console.log(
-        "[CodeVault] Submission IS accepted.",
+        "[CodeSyncVault] Submission IS accepted.",
       );
 
       /*
@@ -72,7 +72,7 @@ export class ContentOrchestrator {
         );
 
       console.log(
-        "[CodeVault] Metadata extracted:",
+        "[CodeSyncVault] Metadata extracted:",
         metadata,
       );
 
@@ -85,7 +85,7 @@ export class ContentOrchestrator {
       );
 
       console.log(
-        "[CodeVault] Metadata validated.",
+        "[CodeSyncVault] Metadata validated.",
       );
 
       /*
@@ -98,14 +98,14 @@ export class ContentOrchestrator {
 
       if (!solution.trim()) {
         console.log(
-          "[CodeVault] Solution extraction failed. Skipping sync.",
+          "[CodeSyncVault] Solution extraction failed. Skipping sync.",
         );
 
         return;
       }
 
       console.log(
-        "[CodeVault] Solution extracted:",
+        "[CodeSyncVault] Solution extracted:",
         solution.length,
         "characters",
       );
@@ -136,7 +136,7 @@ export class ContentOrchestrator {
         );
 
       console.log(
-        "[CodeVault] Fingerprint:",
+        "[CodeSyncVault] Fingerprint:",
         fingerprint,
       );
 
@@ -151,7 +151,7 @@ export class ContentOrchestrator {
 
       if (alreadySynced) {
         console.log(
-          "[CodeVault] Solution already synced for this platform, problem, language, and source. Skipping GitHub commit.",
+          "[CodeSyncVault] Solution already synced for this platform, problem, language, and source. Skipping GitHub commit.",
         );
 
         return;
@@ -167,7 +167,7 @@ export class ContentOrchestrator {
         );
 
       console.log(
-        "[CodeVault] Problem statement extracted.",
+        "[CodeSyncVault] Problem statement extracted.",
       );
 
       /*
@@ -192,7 +192,7 @@ export class ContentOrchestrator {
   );
 
       console.log(
-        "[CodeVault] Solution package built:",
+        "[CodeSyncVault] Solution package built:",
         solutionPackage,
       );
 
@@ -205,7 +205,7 @@ export class ContentOrchestrator {
         );
 
       console.log(
-        "[CodeVault] GitHub sync result:",
+        "[CodeSyncVault] GitHub sync result:",
         result,
       );
 
@@ -215,7 +215,7 @@ export class ContentOrchestrator {
        */
       if (!result.success) {
         console.error(
-          "[CodeVault] GitHub synchronization failed. Fingerprint will NOT be saved.",
+          "[CodeSyncVault] GitHub synchronization failed. Fingerprint will NOT be saved.",
         );
 
         return;
@@ -226,12 +226,12 @@ export class ContentOrchestrator {
       );
 
       console.log(
-        "[CodeVault] Fingerprint saved.",
+        "[CodeSyncVault] Fingerprint saved.",
       );
 
     } catch (error) {
       console.error(
-        "[CodeVault] ContentOrchestrator failed:",
+        "[CodeSyncVault] ContentOrchestrator failed:",
         error,
       );
 
@@ -311,7 +311,7 @@ export class ContentOrchestrator {
     }
 
     console.log(
-      "[CodeVault] Validated metadata:",
+      "[CodeSyncVault] Validated metadata:",
       {
         platform:
           metadata.platform,

@@ -2,7 +2,7 @@ import { SOLUTION_MESSAGE } from "./solution-message";
 
 
 console.log(
-  "CodeVault Main World: Waiting for solution request",
+  "CodeSyncVault Main World: Waiting for solution request",
 );
 
 
