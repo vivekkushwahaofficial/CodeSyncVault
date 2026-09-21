@@ -9,18 +9,18 @@ let authInFlight: Promise<string> | null = null;
 
 async function authenticateGithubInternal(): Promise<string> {
   console.log(
-    "[CodeSyncVault] Starting GitHub connection..."
+    "[CodeVault] Starting GitHub connection..."
   );
 
   try {
     console.log(
-      "[CodeSyncVault] Checking backend availability..."
+      "[CodeVault] Checking backend availability..."
     );
 
     await waitForBackend();
 
     console.log(
-      "[CodeSyncVault] Backend is ready."
+      "[CodeVault] Backend is ready."
     );
 
     const redirectUri =
@@ -50,7 +50,7 @@ async function authenticateGithubInternal(): Promise<string> {
       githubUrl.toString();
 
     console.log(
-      "[CodeSyncVault] Starting GitHub OAuth..."
+      "[CodeVault] Starting GitHub OAuth..."
     );
 
     let responseUrl: string | undefined;
@@ -63,7 +63,7 @@ async function authenticateGithubInternal(): Promise<string> {
         });
     } catch (oauthError) {
       console.error(
-        "[CodeSyncVault] GitHub OAuth request failed."
+        "[CodeVault] GitHub OAuth request failed."
       );
 
       throw oauthError;
@@ -97,14 +97,14 @@ async function authenticateGithubInternal(): Promise<string> {
     }
 
     console.log(
-      "[CodeSyncVault] Sending code to backend..."
+      "[CodeVault] Sending code to backend..."
     );
 
     const accessToken =
       await exchangeGithubCode(code);
 
     console.log(
-      "[CodeSyncVault] GitHub authentication successful."
+      "[CodeVault] GitHub authentication successful."
     );
 
     await saveGithubSettings({
@@ -115,13 +115,13 @@ async function authenticateGithubInternal(): Promise<string> {
     });
 
     console.log(
-      "[CodeSyncVault] GitHub settings saved"
+      "[CodeVault] GitHub settings saved"
     );
 
     return accessToken;
   } catch (error) {
     console.error(
-      "[CodeSyncVault] GitHub OAuth failed:",
+      "[CodeVault] GitHub OAuth failed:",
       error
     );
 
@@ -138,7 +138,7 @@ async function authenticateGithubInternal(): Promise<string> {
 export function authenticateGithub(): Promise<string> {
   if (authInFlight) {
     console.log(
-      "[CodeSyncVault] GitHub authentication already in progress."
+      "[CodeVault] GitHub authentication already in progress."
     );
 
     return authInFlight;

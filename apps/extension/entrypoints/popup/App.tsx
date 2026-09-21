@@ -61,7 +61,7 @@ export default function App() {
   async function connectGithub() {
     if (connectingGithub) {
       console.log(
-        "[CodeSyncVault] GitHub connection already in progress.",
+        "[CodeVault] GitHub connection already in progress.",
       );
 
       return;
@@ -76,7 +76,7 @@ export default function App() {
       setGithubConnected(true);
     } catch (error) {
       console.error(
-        "[CodeSyncVault] GitHub connection failed:",
+        "[CodeVault] GitHub connection failed:",
         error,
       );
     } finally {
@@ -125,7 +125,7 @@ export default function App() {
             fontSize: "20px",
           }}
         >
-          🚀 Welcome to CodeSyncVault
+          🚀 Welcome to CodeVault
         </h2>
 
         {!connectingGithub ? (
@@ -185,7 +185,7 @@ export default function App() {
                 lineHeight: 1.5,
               }}
             >
-              CodeSyncVault is starting its backend. This can
+              CodeVault is starting its backend. This can
               take up to about 60 seconds when the server is
               waking up.
             </p>

@@ -20,7 +20,7 @@ export default function RepositorySetup({
 }: RepositorySetupProps) {
   const [mode, setMode] = useState<"create" | "existing">("create");
 
-  const [repositoryName, setRepositoryName] = useState("codesyncvault-solutions");
+  const [repositoryName, setRepositoryName] = useState("CodeSyncVault-Solutions");
 
   const [repositories, setRepositories] = useState<GithubRepository[]>([]);
 
