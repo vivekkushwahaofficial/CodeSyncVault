@@ -1,7 +1,7 @@
 import type { SolutionMetadata } from "../github/sync/solution-path-generator";
 
 /**
- * A solution registered in the CodeVault repository index.
+ * A solution registered in the CodeSyncVault repository index.
  */
 export interface RepositorySolution {
   /**

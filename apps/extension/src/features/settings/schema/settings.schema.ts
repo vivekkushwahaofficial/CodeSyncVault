@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /**
- * Runtime validation schema for CodeVault settings.
+ * Runtime validation schema for CodeSyncVault settings.
  */
 export const settingsSchema = z.object({
 	githubToken: z.string(),

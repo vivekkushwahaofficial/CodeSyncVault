@@ -13,7 +13,7 @@ export default defineContentScript({
 
   async main() {
     console.log(
-      "[CodeVault] Content script initialized.",
+      "[CodeSyncVault] Content script initialized.",
     );
 
     const hostname =
@@ -34,7 +34,7 @@ export default defineContentScript({
       );
 
       console.log(
-        "[CodeVault] Waiting for LeetCode submission...",
+        "[CodeSyncVault] Waiting for LeetCode submission...",
       );
 
       const submitButton =
@@ -42,7 +42,7 @@ export default defineContentScript({
 
       if (!submitButton) {
         console.log(
-          "[CodeVault] LeetCode submit button not found.",
+          "[CodeSyncVault] LeetCode submit button not found.",
         );
 
         return;
@@ -52,7 +52,7 @@ export default defineContentScript({
         "click",
         async () => {
           console.log(
-            "[CodeVault] LeetCode Submit clicked. Checking result...",
+            "[CodeSyncVault] LeetCode Submit clicked. Checking result...",
           );
 
           setTimeout(
@@ -77,7 +77,7 @@ export default defineContentScript({
       )
     ) {
       console.log(
-        "[CodeVault] GFG content script initialized.",
+        "[CodeSyncVault] GFG content script initialized.",
       );
 
       await injectScript(
@@ -88,7 +88,7 @@ export default defineContentScript({
       );
 
       console.log(
-        "[CodeVault] GFG page bridge injected.",
+        "[CodeSyncVault] GFG page bridge injected.",
       );
 
       const submitButton =
@@ -96,21 +96,21 @@ export default defineContentScript({
 
       if (!submitButton) {
         console.log(
-          "[CodeVault] GFG submit button not found.",
+          "[CodeSyncVault] GFG submit button not found.",
         );
 
         return;
       }
 
       console.log(
-        "[CodeVault] GFG submit button found.",
+        "[CodeSyncVault] GFG submit button found.",
       );
 
       submitButton.addEventListener(
         "click",
         async () => {
           console.log(
-            "[CodeVault] GFG Submit clicked.",
+            "[CodeSyncVault] GFG Submit clicked.",
           );
 
           const accepted =
@@ -118,14 +118,14 @@ export default defineContentScript({
 
           if (!accepted) {
             console.log(
-              "[CodeVault] GFG submission was not accepted.",
+              "[CodeSyncVault] GFG submission was not accepted.",
             );
 
             return;
           }
 
           console.log(
-            "[CodeVault] GFG submission accepted.",
+            "[CodeSyncVault] GFG submission accepted.",
           );
 
           await ContentOrchestrator.start();
@@ -143,7 +143,7 @@ export default defineContentScript({
       hostname.includes("hackerrank.com")
     ) {
       console.log(
-        "[CodeVault] HackerRank content script initialized.",
+        "[CodeSyncVault] HackerRank content script initialized.",
       );
 
       await injectScript(
@@ -154,7 +154,7 @@ export default defineContentScript({
       );
 
       console.log(
-        "[CodeVault] HackerRank main-world bridge injected.",
+        "[CodeSyncVault] HackerRank main-world bridge injected.",
       );
 
       return;
@@ -293,18 +293,18 @@ window.addEventListener(
 
     if (!submission) {
       console.warn(
-        "[CodeVault] HackerRank submission data missing.",
+        "[CodeSyncVault] HackerRank submission data missing.",
       );
 
       return;
     }
 
     console.log(
-      "[CodeVault] HackerRank accepted submission received.",
+      "[CodeSyncVault] HackerRank accepted submission received.",
     );
 
     console.log(
-      "[CodeVault] HackerRank submission:",
+      "[CodeSyncVault] HackerRank submission:",
       submission,
     );
 
@@ -313,7 +313,7 @@ window.addEventListener(
     );
 
     console.log(
-      "[CodeVault] HackerRank accepted submission stored.",
+      "[CodeSyncVault] HackerRank accepted submission stored.",
     );
 
     await ContentOrchestrator.start();

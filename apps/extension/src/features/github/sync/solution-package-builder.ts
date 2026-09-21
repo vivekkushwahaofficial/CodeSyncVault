@@ -67,7 +67,7 @@ export async function buildSolutionPackage(
     };
 
     console.log(
-      "[CodeVault] Pattern Engine completed:",
+      "[CodeSyncVault] Pattern Engine completed:",
       {
         patterns:
           classification.patterns,
@@ -97,7 +97,7 @@ export async function buildSolutionPackage(
      */
 
     console.warn(
-      "[CodeVault] Pattern Engine failed. Continuing without classification.",
+      "[CodeSyncVault] Pattern Engine failed. Continuing without classification.",
       error,
     );
   }
@@ -225,7 +225,7 @@ export async function buildSolutionPackage(
     });
 
   console.log(
-    "[CodeVault] Repository Engine result:",
+    "[CodeSyncVault] Repository Engine result:",
     repositoryResult,
   );
 

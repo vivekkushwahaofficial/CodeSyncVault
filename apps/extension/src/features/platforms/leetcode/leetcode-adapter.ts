@@ -31,7 +31,7 @@ export class LeetCodeAdapter
   ): Promise<void> {
 
     console.log(
-      "[CodeVault] Waiting for LeetCode submission result...",
+      "[CodeSyncVault] Waiting for LeetCode submission result...",
     );
 
     await waitForElement(
@@ -40,7 +40,7 @@ export class LeetCodeAdapter
     );
 
     console.log(
-      "[CodeVault] Submission result found.",
+      "[CodeSyncVault] Submission result found.",
     );
 
     await waitForElement(
@@ -49,7 +49,7 @@ export class LeetCodeAdapter
     );
 
     console.log(
-      "[CodeVault] Problem link found.",
+      "[CodeSyncVault] Problem link found.",
     );
   }
 

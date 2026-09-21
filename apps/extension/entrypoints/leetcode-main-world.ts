@@ -9,7 +9,7 @@ declare global {
 export default defineUnlistedScript(() => {
   if (window.__codevaultMainWorldInitialized) {
     console.debug(
-      "[CodeVault] Main world already initialized.",
+      "[CodeSyncVault] Main world already initialized.",
     );
 
     return;
@@ -18,7 +18,7 @@ export default defineUnlistedScript(() => {
   window.__codevaultMainWorldInitialized = true;
 
   console.log(
-    "[CodeVault] LeetCode main world initialized.",
+    "[CodeSyncVault] LeetCode main world initialized.",
   );
 
   window.addEventListener(
@@ -38,7 +38,7 @@ export default defineUnlistedScript(() => {
       }
 
       console.log(
-        "[CodeVault] Solution request received.",
+        "[CodeSyncVault] Solution request received.",
       );
 
       const model =
@@ -46,7 +46,7 @@ export default defineUnlistedScript(() => {
 
       if (!model) {
         console.warn(
-          "[CodeVault] Monaco editor model not found.",
+          "[CodeSyncVault] Monaco editor model not found.",
         );
 
         return;
@@ -56,7 +56,7 @@ export default defineUnlistedScript(() => {
         model.getValue();
 
       console.log(
-        "[CodeVault] Solution received:",
+        "[CodeSyncVault] Solution received:",
         solution.length,
         "characters.",
       );

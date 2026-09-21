@@ -1,8 +1,8 @@
 # Code of Conduct
 
-CodeVault is an open-source browser extension built for developers. We welcome contributions from developers of all experience levels.
+CodeSyncVault is an open-source browser extension built for developers. We welcome contributions from developers of all experience levels.
 
-By participating in the CodeVault project, you agree to maintain a respectful, professional, and constructive environment.
+By participating in the CodeSyncVault project, you agree to maintain a respectful, professional, and constructive environment.
 
 ## Expected Behavior
 
@@ -23,8 +23,8 @@ The following is not acceptable:
 - Deliberately disruptive or abusive behavior.
 - Sharing private or sensitive information without permission.
 - Introducing malicious code or intentionally harmful functionality.
-- Attempting to compromise CodeVault, its users, or connected services.
-- Misrepresenting an independent fork as an official CodeVault release.
+- Attempting to compromise CodeSyncVault, its users, or connected services.
+- Misrepresenting an independent fork as an official CodeSyncVault release.
 
 ## Security
 
@@ -42,11 +42,11 @@ Serious or repeated violations may result in removal from the project.
 
 - `LICENSE` — Software licensing
 - `CONTRIBUTING.md` — Contribution guidelines
-- `TRADEMARKS.md` — CodeVault branding policy
+- `TRADEMARKS.md` — CodeSyncVault branding policy
 
-Thank you for helping keep CodeVault respectful, secure, and developer-friendly.
+Thank you for helping keep CodeSyncVault respectful, secure, and developer-friendly.
 
 ---
 
-**CodeVault**  
+**CodeSyncVault**
 Copyright © 2026 Vivek Kumar

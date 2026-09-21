@@ -20,7 +20,7 @@ export default function RepositorySetup({
 }: RepositorySetupProps) {
   const [mode, setMode] = useState<"create" | "existing">("create");
 
-  const [repositoryName, setRepositoryName] = useState("codevault-solutions");
+  const [repositoryName, setRepositoryName] = useState("codesyncvault-solutions");
 
   const [repositories, setRepositories] = useState<GithubRepository[]>([]);
 
@@ -89,7 +89,7 @@ export default function RepositorySetup({
 
       const repository = await createRepository({
         name: repositoryName,
-        description: "Repository created by CodeVault",
+        description: "Repository created by CodeSyncVault",
         private: false,
       });
 
@@ -131,7 +131,7 @@ export default function RepositorySetup({
           fontSize: "20px",
         }}
       >
-        🚀 Welcome to CodeVault
+        🚀 Welcome to CodeSyncVault
       </h2>
 
       <p

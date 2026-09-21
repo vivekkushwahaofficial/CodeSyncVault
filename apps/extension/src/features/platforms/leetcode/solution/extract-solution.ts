@@ -57,7 +57,7 @@ export async function extractSolution(
       if (!solution.trim()) {
 
         console.log(
-          "CodeVault: Empty solution received",
+          "CodeSyncVault: Empty solution received",
         );
 
         return;
@@ -74,7 +74,7 @@ export async function extractSolution(
 
 
       console.log(
-        "CodeVault: Solution received",
+        "CodeSyncVault: Solution received",
         solution.length,
       );
 
@@ -164,7 +164,7 @@ export async function extractSolution(
 
 
       console.log(
-        "CodeVault: Solution extraction timeout",
+        "CodeSyncVault: Solution extraction timeout",
       );
 
 

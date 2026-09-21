@@ -8,7 +8,7 @@ import {
 const SETTINGS_STORAGE_KEY = "codevault.settings";
 
 /**
- * Handles persistence of CodeVault settings.
+ * Handles persistence of CodeSyncVault settings.
  */
 export class SettingsStorage {
   /**

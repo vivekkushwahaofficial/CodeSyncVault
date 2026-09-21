@@ -154,7 +154,7 @@ export class PatternEngine {
     };
 
     console.log(
-      "[CodeVault] Pattern Engine classification:",
+      "[CodeSyncVault] Pattern Engine classification:",
       result,
     );
 

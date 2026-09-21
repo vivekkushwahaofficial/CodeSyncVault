@@ -2,7 +2,7 @@ export default defineUnlistedScript(() => {
   const REQUEST_EVENT = "codevault:gfg:get-solution";
   const RESPONSE_EVENT = "codevault:gfg:solution";
 
-  console.log("[CodeVault] GFG page bridge initialized.");
+  console.log("[CodeSyncVault] GFG page bridge initialized.");
 
   document.addEventListener(REQUEST_EVENT, () => {
     const editors = Array.from(
@@ -23,7 +23,7 @@ export default defineUnlistedScript(() => {
 
       if (code) {
         console.log(
-          "[CodeVault] GFG bridge extracted:",
+          "[CodeSyncVault] GFG bridge extracted:",
           code.length,
           "characters",
         );
@@ -39,7 +39,7 @@ export default defineUnlistedScript(() => {
     }
 
     console.log(
-      "[CodeVault] GFG bridge could not find Ace editor value.",
+      "[CodeSyncVault] GFG bridge could not find Ace editor value.",
     );
 
     document.dispatchEvent(

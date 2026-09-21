@@ -1,4 +1,4 @@
-# 🚀 CodeVault
+# 🚀 CodeSyncVault
 
 > Automatically detect, organize, and synchronize accepted coding solutions from supported coding platforms to GitHub.
 
@@ -11,9 +11,9 @@
 
 ## 📌 Overview
 
-CodeVault is an open-source browser extension that automatically captures accepted coding solutions, extracts their metadata, organizes them into a structured GitHub repository, and keeps your coding portfolio up to date.
+CodeSyncVault is an open-source browser extension that automatically captures accepted coding solutions, extracts their metadata, organizes them into a structured GitHub repository, and keeps your coding portfolio up to date.
 
-Instead of manually copying solutions, creating folders, generating documentation, and updating statistics, CodeVault automates the workflow after an accepted submission.
+Instead of manually copying solutions, creating folders, generating documentation, and updating statistics, CodeSyncVault automates the workflow after an accepted submission.
 
 ### Currently Supported Platforms
 
@@ -22,11 +22,11 @@ Instead of manually copying solutions, creating folders, generating documentatio
 - 🔵 HackerRank
 
 ---
-## 🚀 Install CodeVault
+## 🚀 Install CodeSyncVault
 
 [![Install from Chrome Web Store](https://img.shields.io/badge/Install-Chrome%20Web%20Store-blue?logo=googlechrome)](https://chromewebstore.google.com/detail/codevault/loigjljekeahnjccojnnkmagibghofbn)
 
-🌐 [Official Website](https://code-vault-website.vercel.app/)
+🌐 [Official Website](https://codesyncvault.vercel.app/)
 
 🔗 [LinkedIn](https://www.linkedin.com/company/codevault-tool/)
 
@@ -35,15 +35,15 @@ Instead of manually copying solutions, creating folders, generating documentatio
 
 ## 🔄 Automatic Solution Detection
 
-CodeVault detects accepted submissions on supported coding platforms.
+CodeSyncVault detects accepted submissions on supported coding platforms.
 
-Simply solve and submit a problem normally. Once the submission is accepted, CodeVault processes the solution automatically.
+Simply solve and submit a problem normally. Once the submission is accepted, CodeSyncVault processes the solution automatically.
 
 ---
 
 ## 💻 Multi-Platform Support
 
-CodeVault currently supports:
+CodeSyncVault currently supports:
 
 | Platform | Status |
 | --- | --- |
@@ -58,7 +58,7 @@ CodeVault currently supports:
 
 ## 📦 Solution Extraction
 
-CodeVault automatically extracts submitted source code from accepted solutions.
+CodeSyncVault automatically extracts submitted source code from accepted solutions.
 
 Supported languages depend on the platform and detector implementation.
 
@@ -68,7 +68,7 @@ The repository structure is designed to support multiple programming languages i
 
 ## 🧠 Metadata Extraction
 
-CodeVault extracts and maintains metadata such as:
+CodeSyncVault extracts and maintains metadata such as:
 
 - Problem name
 - Problem slug
@@ -109,7 +109,7 @@ Time: O(n)
 Space: O(n)
 ````
 
-CodeVault also automatically generates a repository-level portfolio README.
+CodeSyncVault also automatically generates a repository-level portfolio README.
 
 ---
 
@@ -138,7 +138,7 @@ No manual README editing is required.
 
 ## 🔥 Coding Activity Heatmap
 
-CodeVault automatically generates a GitHub-compatible coding activity heatmap.
+CodeSyncVault automatically generates a GitHub-compatible coding activity heatmap.
 
 Generated at:
 
@@ -168,7 +168,7 @@ The heatmap is generated from solved-date information stored in:
 
 ## 🔐 GitHub OAuth Authentication
 
-CodeVault uses GitHub OAuth authentication.
+CodeSyncVault uses GitHub OAuth authentication.
 
 Users do not need to manually create or manage a Personal Access Token for the normal synchronization workflow.
 
@@ -176,7 +176,7 @@ Users do not need to manually create or manage a Personal Access Token for the n
 
 ## 🚀 Automatic GitHub Synchronization
 
-After an accepted submission, CodeVault can automatically:
+After an accepted submission, CodeSyncVault can automatically:
 
 ```text
 Accepted Submission
@@ -206,7 +206,7 @@ Push to GitHub
 
 ## 🛡️ Duplicate Detection
 
-CodeVault prevents previously synchronized solutions from being committed again.
+CodeSyncVault prevents previously synchronized solutions from being committed again.
 
 A unique fingerprint is generated for synchronized solutions and checked against existing repository data.
 
@@ -249,7 +249,7 @@ The exact generated path can be configured and managed by the repository engine.
 
 # 🧠 Repository Engine
 
-The CodeVault Repository Engine manages repository-level coding data and documentation.
+The CodeSyncVault Repository Engine manages repository-level coding data and documentation.
 
 ```text
 .codevault/
@@ -284,7 +284,7 @@ The Repository Engine uses this information to generate:
 └────────────┬─────────────┘
              ↓
 ┌──────────────────────────┐
-│ CodeVault Detector       │
+│ CodeSyncVault Detector       │
 └────────────┬─────────────┘
              ↓
 ┌──────────────────────────┐
@@ -383,7 +383,7 @@ Browser Extension
 # 📁 Project Structure
 
 ```text
-CodeVault
+CodeSyncVault
 │
 ├── apps
 │   ├── backend
@@ -420,7 +420,7 @@ CodeVault
 Clone the repository:
 
 ```bash
-git clone https://github.com/vivekkushwahaofficial/CodeVault.git
+git clone https://github.com/vivekkushwahaofficial/CodeSyncVault.git
 ```
 
 Install dependencies:
@@ -461,7 +461,7 @@ chrome://extensions
 apps/extension/.output/chrome-mv3
 ```
 
-5. Open CodeVault.
+5. Open CodeSyncVault.
 
 6. Connect your GitHub account.
 
@@ -499,7 +499,7 @@ cd apps/backend
 ---
 # 📊 Current Release
 
-## CodeVault v1.4.1
+## CodeSyncVault v1.4.1
 
 ### What's Updated
 
@@ -520,7 +520,7 @@ v1.4.1 includes:
 
 # 🚧 Roadmap
 
-CodeVault is actively evolving.
+CodeSyncVault is actively evolving.
 
 ## Platform Expansion
 
@@ -576,7 +576,7 @@ Future versions will introduce intelligent revision capabilities including:
 
 ## 🌐 Developer Portfolio
 
-CodeVault is evolving toward a complete developer portfolio system.
+CodeSyncVault is evolving toward a complete developer portfolio system.
 
 Future capabilities include:
 
@@ -628,7 +628,7 @@ Then open a Pull Request.
 
 # 📄 License
 
-CodeVault is licensed under the **Apache License 2.0**.
+CodeSyncVault is licensed under the **Apache License 2.0**.
 
 See the `LICENSE` file for details.
 
@@ -638,15 +638,15 @@ See the `LICENSE` file for details.
 
 Found a bug or have a feature request?
 
-Open an issue in the CodeVault repository.
+Open an issue in the CodeSyncVault repository.
 
-⭐ If you find CodeVault useful, consider starring the repository.
+⭐ If you find CodeSyncVault useful, consider starring the repository.
 
 ---
 
 # 🌟 Vision
 
-CodeVault aims to become a complete coding solution management and developer productivity platform.
+CodeSyncVault aims to become a complete coding solution management and developer productivity platform.
 
 The long-term vision is to allow developers to:
 

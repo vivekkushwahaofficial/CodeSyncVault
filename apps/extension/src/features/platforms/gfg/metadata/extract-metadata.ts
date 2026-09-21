@@ -2,7 +2,7 @@ import type { ProblemMetadata } from "../../shared/problem-metadata";
 import { PlatformType } from "../../shared/platform-type";
 
 /**
- * Supported programming languages returned by CodeVault.
+ * Supported programming languages returned by CodeSyncVault.
  */
 const LANGUAGE_PATTERNS: Array<{
   pattern: RegExp;
@@ -141,7 +141,7 @@ export function extractMetadata(
     );
 
   console.log(
-    "[CodeVault] GFG language:",
+    "[CodeSyncVault] GFG language:",
     language || "NOT FOUND",
   );
 
@@ -260,7 +260,7 @@ function extractLanguage(
 
   /**
    * Convert GFG's language name into
-   * CodeVault's canonical language name.
+   * CodeSyncVault's canonical language name.
    */
   const language =
     normalizeLanguage(
@@ -305,7 +305,7 @@ function extractLanguage(
 
 /**
  * Converts visible GFG language text
- * into CodeVault's canonical language names.
+ * into CodeSyncVault's canonical language names.
  */
 function normalizeLanguage(
   value:
