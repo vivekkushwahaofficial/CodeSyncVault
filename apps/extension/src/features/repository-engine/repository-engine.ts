@@ -87,35 +87,46 @@ export class RepositoryEngine {
         solution,
       );
 
-const files = [
-  {
-    path: ".codevault/index.json",
-    content:
-      serializeRepositoryIndex(
-        this.index,
-      ),
-  },
+    return this.generate();
+  }
 
-  {
-    path: ".codevault/activity.svg",
-    content:
-      generateActivityHeatmap(
-        this.index,
-      ),
-  },
+  /**
+   * Generates all repository artifacts
+   * from the current repository index.
+   *
+   * Used when rebuilding an existing repository.
+   */
+  generate(): RepositoryEngineResult {
 
-  ...this.generatePatternFiles(),
+    const files = [
+      {
+        path: ".codevault/index.json",
+        content:
+          serializeRepositoryIndex(
+            this.index,
+          ),
+      },
 
-  ...this.generateTopicFiles(),
+      {
+        path: ".codevault/activity.svg",
+        content:
+          generateActivityHeatmap(
+            this.index,
+          ),
+      },
 
-  {
-    path: "README.md",
-    content:
-      generatePortfolioReadme(
-        this.index,
-      ),
-  },
-];
+      ...this.generatePatternFiles(),
+
+      ...this.generateTopicFiles(),
+
+      {
+        path: "README.md",
+        content:
+          generatePortfolioReadme(
+            this.index,
+          ),
+      },
+    ];
 
     return {
       index: this.index,

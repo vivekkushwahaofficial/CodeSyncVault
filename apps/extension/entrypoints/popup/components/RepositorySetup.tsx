@@ -9,6 +9,8 @@ import { saveSelectedRepository } from "../../../src/features/github/github-auth
 
 import { getGithubUser } from "../../../src/features/github/api/github-user";
 
+import { reanalyzeConnectedRepository } from "../../../src/features/repository-engine/repository-reanalysis-service";
+
 import type { GithubRepository } from "../../../src/features/github/api/github-create-repository";
 
 interface RepositorySetupProps {
@@ -81,6 +83,8 @@ export default function RepositorySetup({
           repository.name,
           repository.default_branch,
         );
+
+        await reanalyzeConnectedRepository();
 
         onRepositoryConfigured();
 
