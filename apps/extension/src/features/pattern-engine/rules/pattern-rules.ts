@@ -1,658 +1,712 @@
-import type { PatternRule } from "../types";
+import type { PatternRule, PatternRuleContext } from "../types";
+
+/**
+ * Pattern detection rules.
+ *
+ * Classification priority:
+ *
+ * 1. Official platform metadata
+ * 2. Problem-statement semantics
+ * 3. Strong generic source-code structure
+ * 4. Language/library syntax as supporting evidence
+ *
+ * The rules intentionally avoid depending on a single
+ * programming language or platform.
+ */
 
 const hasAny = (text: string, patterns: RegExp[]): boolean =>
   patterns.some((pattern) => pattern.test(text));
 
-const hasAll = (text: string, patterns: RegExp[]): boolean =>
-  patterns.every((pattern) => pattern.test(text));
+const hasComparison = (source: string): boolean => /[<>]=?|==|!=/.test(source);
 
-const hasComparison = (source: string): boolean => /[<>]=?/.test(source);
+const hasLoop = (source: string): boolean =>
+  /\b(for|while|foreach)\b/.test(source);
+
+const hasConditional = (source: string): boolean =>
+  /\b(if|else|switch|case)\b/.test(source);
+
+const hasIndexAccess = (source: string): boolean => /\[[^\]]+\]/.test(source);
+
+const hasAssignment = (source: string): boolean =>
+  /(?:^|[;\n{}])\s*[A-Za-z_]\w*\s*=/.test(source);
+
+const hasIncrementOrDecrement = (source: string): boolean =>
+  /(?:\+\+|--|\+=\s*1|-=\s*1)/.test(source);
+
+const hasNestedLoop = (source: string): boolean =>
+  (source.match(/\b(for|while|foreach)\b/g) ?? []).length >= 2;
+
+const hasMetadataTag = (tags: string[], names: string[]): boolean => {
+  const normalizedTags = tags.map((tag) => tag.trim().toLowerCase());
+
+  return names.some((name) => normalizedTags.includes(name.toLowerCase()));
+};
+
+const hasProblemSignal = (problemText: string, patterns: RegExp[]): boolean =>
+  hasAny(problemText, patterns);
 
 /**
- * Detects the classic midpoint calculation used
- * by binary-search implementations.
+ * Detects pointer/index movement.
  *
- * Supports:
+ * Supports common forms across languages without
+ * depending on variable names.
+ */
+const hasIndexMovement = (source: string): boolean =>
+  hasIncrementOrDecrement(source) || /\[[^\]]+\]\s*(?:\+\+|--)/.test(source);
+
+/**
+ * Detects multiple independently assigned index-like
+ * variables without requiring names such as left/right.
  *
- * start + (end - start) / 2
- * first + (last - first) / 2
- * low + (high - low) / 2
- * lo + (hi - lo) / 2
+ * This supports declaration-based languages and
+ * assignment-based languages such as Python.
+ */
+const hasMultipleIndexVariables = (source: string): boolean => {
+  const declaredVariables = [
+    ...source.matchAll(
+      /\b(?:int|long|short|double|float|boolean|bool|string|var|let|const|auto)\s+([A-Za-z_]\w*)/g,
+    ),
+  ].map((match) => match[1]);
+
+  const assignedVariables = [
+    ...source.matchAll(/(?:^|[;\n])\s*([A-Za-z_]\w*)\s*=\s*[^=\n]+/g),
+  ].map((match) => match[1]);
+
+  return new Set([...declaredVariables, ...assignedVariables]).size >= 2;
+};
+
+/**
+ * Detects midpoint-style arithmetic.
  */
 const hasMidpointCalculation = (source: string): boolean =>
-  /\b(?:start|first|low|lo)\s*\+\s*\(?\s*(?:end|last|high|hi)\s*-\s*(?:start|first|low|lo)\s*\)?\s*\/\s*2\b/.test(
-    source,
-  ) ||
-  /\b(?:start|first|low|lo)\s*\+\s*\(\s*(?:end|last|high|hi)\s*-\s*(?:start|first|low|lo)\s*\)\s*\/\s*2\b/.test(
+  /\([^()]+\s*\+\s*[^()]+\)\s*\/\s*2/.test(source) ||
+  /\bmid(?:d)?\s*=/.test(source) ||
+  /\bmid(?:d)?\s*:=/.test(source);
+
+/**
+ * Detects binary-search-style boundary updates.
+ */
+const hasBinarySearchBoundaries = (source: string): boolean =>
+  /\b(?:low|lo|left|l|high|hi|right|r)\b\s*=\s*[^;\n]+(?:\+|-)\s*1\b/.test(
     source,
   );
 
 /**
- * Detects the characteristic binary-search movement:
- *
- * start = mid + 1
- * end   = mid - 1
- *
- * Also supports first/last and low/high naming.
+ * Detects recursive structure conservatively.
  */
-const hasBinarySearchBoundaryUpdate = (source: string): boolean =>
-  /\b(?:start|first|low|lo)\s*=\s*mid(?:\d*|d)?\s*\+\s*1\b/.test(source) ||
-  /\b(?:end|last|high|hi)\s*=\s*mid(?:\d*|d)?\s*-\s*1\b/.test(source) ||
-  /\b(?:start|first|low|lo)\s*=\s*mid(?:\d*|d)?\b/.test(source) ||
-  /\b(?:end|last|high|hi)\s*=\s*mid(?:\d*|d)?\b/.test(source);
+const hasRecursiveStructure = (source: string): boolean => {
+  const declarations = [
+    ...source.matchAll(
+      /\b(?:function\s+|(?:int|long|double|float|boolean|bool|string|void|auto)\s+)([A-Za-z_]\w*)\s*\(/g,
+    ),
+  ].map((match) => match[1]);
 
-/**
- * Detects an interval-search loop.
- */
-const hasBinarySearchLoop = (source: string): boolean =>
-  /\b(?:while|for)\s*\([^)]*\b(?:start|first|low|lo|end|last|high|hi)\b[^)]*\)/.test(
-    source,
-  );
+  return declarations.some((name) => {
+    if (!name) {
+      return false;
+    }
 
-const hasStackOperations = (source: string): boolean =>
-  /\.push\(|\.pop\(|\.peek\(|\.top\(|\.push_back\(|\.pop_back\(/.test(source);
+    const declaration = new RegExp(`\\b${name}\\s*\\(`);
 
-const hasQueueOperations = (source: string): boolean =>
-  /\.offer\(|\.poll\(|\.add\(|\.remove\(|\.enqueue\(|\.dequeue\(/.test(source);
+    const body = source.replace(declaration, "");
 
-const hasHashLookup = (source: string): boolean =>
-  /\.get\(|\.put\(|\.containsKey\(|\.contains\(|\.has\(|\[[^]]+\]/.test(source);
-
-const hasLeftRightMovement = (source: string): boolean =>
-  /\b(?:left|right|lo|hi|start|end)\s*(?:\+\+|--|\+=\s*1|-= \s*1)/.test(source);
-
-const hasRecursiveCall = (source: string): boolean => {
-  const methodNames =
-    source.match(
-      /\b(?:void|boolean|int|long|double|float|char|string)\s+([a-zA-Z_]\w*)\s*\(/g,
-    ) ?? [];
-
-  return methodNames.some((declaration) => {
-    const match = declaration.match(/\s([a-zA-Z_]\w*)\s*\(/);
-
-    return match
-      ? new RegExp(`\\b${match[1]}\\s*\\(`).test(
-          source.replace(declaration, ""),
-        )
-      : false;
+    return new RegExp(`\\b${name}\\s*\\(`).test(body);
   });
 };
 
-export const PATTERN_RULES: PatternRule[] = [
-  // --------------------------------------------------
-  // Hash Map
-  // --------------------------------------------------
+/**
+ * Detects stack-like source structure.
+ *
+ * Stronger than simply checking for array access and
+ * a loop. A stack normally has insertion/removal at
+ * one end.
+ */
+const hasStackStructure = (source: string): boolean =>
+  hasAny(source, [
+    /\bpush\s*\(/,
+    /\bpop\s*\(/,
+    /\bpeek\s*\(/,
+    /\btop\s*\(/,
+    /\bpush_back\s*\(/,
+    /\bpop_back\s*\(/,
+    /\.append\s*\(/,
+  ]) || /\b(?:stack|stk)\b/.test(source);
 
+/**
+ * Detects queue-like source structure.
+ */
+const hasQueueStructure = (source: string): boolean =>
+  hasAny(source, [
+    /\benqueue\s*\(/,
+    /\bdequeue\s*\(/,
+    /\bpeek\s*\(/,
+    /\bpoll\s*\(/,
+    /\boffer\s*\(/,
+    /\bpush\s*\(/,
+  ]) || /\b(?:queue|deque|q)\b/.test(source);
+
+/**
+ * Detects map/dictionary usage using common
+ * language-independent lookup concepts.
+ */
+const hasMapStructure = (source: string): boolean =>
+  hasAny(source, [
+    /\b(?:get|put|set|has|contains|lookup)\s*\(/,
+    /\b(?:unordered_map|HashMap|Dictionary|dict|Map)\b/i,
+  ]) || /\[[^\]]+\]/.test(source);
+
+/**
+ * Detects stronger heap evidence.
+ */
+const hasHeapStructure = (source: string): boolean =>
+  hasAny(source, [
+    /\b(?:heap|priorityqueue|priority_queue|priority queue)\b/i,
+    /\b(?:heappush|heappop|heapify)\s*\(/i,
+    /\b(?:offer|poll)\s*\(/i,
+  ]);
+
+/**
+ * Detects sorting evidence.
+ */
+const hasSortingStructure = (source: string): boolean =>
+  /\b(?:sort|sorted|sorting)\b/i.test(source);
+
+/**
+ * Detects graph traversal structure.
+ */
+const hasTraversalStructure = (source: string): boolean =>
+  hasLoop(source) || hasRecursiveStructure(source);
+
+export const PATTERN_RULES: PatternRule[] = [
   {
     name: "Hash Map",
 
-    score: ({ normalizedProblemText, normalizedSource }) => {
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
       let score = 0;
 
       if (
-        /\b(hashmap|unordered_map|dictionary|dict|map)\b/.test(normalizedSource)
+        hasMetadataTag(metadataTags, [
+          "Hash Table",
+          "Hash Map",
+          "Hashing",
+          "Dictionary",
+        ])
       ) {
-        score += 50;
-      }
-
-      if (hasHashLookup(normalizedSource)) {
-        score += 25;
+        score += 100;
       }
 
       if (
-        /\b(two sum|frequency|frequencies|count occurrences|duplicate|lookup|complement)\b/.test(
+        hasProblemSignal(normalizedProblemText, [
+          /\bhash table\b/,
+          /\bhash map\b/,
+          /\bfrequency map\b/,
+          /\bdictionary\b/,
+          /\bassociative array\b/,
+          /\blookup table\b/,
+        ])
+      ) {
+        score += 55;
+      }
+
+      if (
+        /\b(two sum|two numbers|complement|frequency|frequencies|count occurrences|duplicate|lookup)\b/.test(
           normalizedProblemText,
         )
       ) {
-        score += 30;
+        score += 25;
       }
 
-      if (/\b(seen|lookup|containskey|contains|has)\b/.test(normalizedSource)) {
+      if (hasMapStructure(normalizedSource)) {
         score += 15;
       }
 
       return Math.min(score, 100);
     },
   },
-
-  // --------------------------------------------------
-  // Two Pointer
-  // --------------------------------------------------
 
   {
     name: "Two Pointer",
 
-    score: ({ normalizedProblemText, normalizedSource }) => {
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
       let score = 0;
 
-      if (/\b(left|right|lo|hi)\b/.test(normalizedSource)) {
-        score += 15;
+      if (hasMetadataTag(metadataTags, ["Two Pointers", "Two Pointer"])) {
+        score += 100;
       }
 
       if (
-        /\b(two pointer|two pointers|sorted array|pair|opposite ends)\b/.test(
+        hasProblemSignal(normalizedProblemText, [
+          /\btwo pointer/,
+          /\btwo pointers/,
+          /\bopposite ends\b/,
+          /\btwo indices\b/,
+          /\btwo positions\b/,
+          /\bleft and right pointers?\b/,
+        ])
+      ) {
+        score += 60;
+      }
+
+      if (
+        /\b(?:sorted array|sorted list|two ends|opposite ends)\b/.test(
           normalizedProblemText,
         )
       ) {
-        score += 45;
-      }
-
-      if (/\bwhile\s*\([^)]*(left|right|lo|hi)[^)]*\)/.test(normalizedSource)) {
         score += 20;
       }
 
-      if (hasLeftRightMovement(normalizedSource)) {
-        score += 20;
+      if (
+        hasMultipleIndexVariables(normalizedSource) &&
+        hasIndexMovement(normalizedSource)
+      ) {
+        score += 25;
       }
 
-      if (/\b(?:left|right)\s*[\+\-]=?\s*1\b/.test(normalizedSource)) {
+      if (
+        hasComparison(normalizedSource) &&
+        hasIndexAccess(normalizedSource) &&
+        hasIndexMovement(normalizedSource)
+      ) {
         score += 15;
       }
 
       return Math.min(score, 100);
     },
   },
-
-  // --------------------------------------------------
-  // Sliding Window
-  // --------------------------------------------------
 
   {
     name: "Sliding Window",
 
-    score: ({ normalizedProblemText, normalizedSource }) => {
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
       let score = 0;
 
+      if (hasMetadataTag(metadataTags, ["Sliding Window"])) {
+        score += 100;
+      }
+
       if (
-        /\b(sliding window|substring|subarray|contiguous)\b/.test(
+        /\b(sliding window|contiguous|substring|subarray|continuous segment)\b/.test(
           normalizedProblemText,
         )
       ) {
-        score += 35;
+        score += 50;
       }
 
-      if (/\b(left|right|windowstart|windowend)\b/.test(normalizedSource)) {
+      if (
+        /\b(longest|shortest|maximum|minimum)\b/.test(normalizedProblemText)
+      ) {
         score += 15;
       }
 
-      if (
-        /\bwhile\s*\([^)]*(left|right|window)[^)]*\)/.test(normalizedSource)
-      ) {
-        score += 20;
+      if (hasLoop(normalizedSource) && hasIndexAccess(normalizedSource)) {
+        score += 15;
       }
 
-      if (/\b(?:right|left)\s*(?:\+\+|\+=\s*1)\b/.test(normalizedSource)) {
-        score += 20;
-      }
-
-      if (
-        /\b(?:left|right)\s*=\s*(?:left|right)\s*\+\s*1\b/.test(
-          normalizedSource,
-        )
-      ) {
-        score += 10;
-      }
-
-      if (
-        /\bfor\s*\([^;]*\b(?:left|right)\b[^;]*;[^;]*;[^)]*\b(?:left|right)\+\+/.test(
-          normalizedSource,
-        )
-      ) {
-        score += 10;
+      if (hasIndexMovement(normalizedSource)) {
+        score += 15;
       }
 
       return Math.min(score, 100);
     },
   },
-
-  // --------------------------------------------------
-  // Binary Search
-  // --------------------------------------------------
 
   {
     name: "Binary Search",
 
-    score: ({ title, normalizedProblemText, normalizedSource }) => {
+    score: ({
+      metadataTags,
+      title,
+      normalizedProblemText,
+      normalizedSource,
+    }) => {
       let score = 0;
 
-      /*
-       * Problem-level signal.
-       *
-       * This is useful, but deliberately NOT required.
-       */
-      if (
-        /\b(binary search|sorted array|sorted list|search efficiently|find position|insert position)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 25;
-      }
-
-      if (/\bmedian of two sorted arrays\b/.test(title.toLowerCase())) {
-        score += 25;
-      }
-
-      /*
-       * Structural signals.
-       */
-
-      // mid / middle variable.
-      if (/\bmid(?:\d*|d)?\b|\bmiddle\b/.test(normalizedSource)) {
-        score += 20;
-      }
-
-      // A pair of search boundaries.
-      if (
-        hasAny(normalizedSource, [
-          /\b(?:start|first|low|lo)\b/,
-          /\b(?:end|last|high|hi)\b/,
-        ]) &&
-        hasAll(normalizedSource, [
-          /\b(?:start|first|low|lo)\b/,
-          /\b(?:end|last|high|hi)\b/,
-        ])
-      ) {
-        score += 15;
-      }
-
-      // Classic midpoint calculation.
-      if (hasMidpointCalculation(normalizedSource)) {
-        score += 25;
-      }
-
-      // Boundary movement based on mid.
-      if (hasBinarySearchBoundaryUpdate(normalizedSource)) {
-        score += 30;
-      }
-
-      // Search interval loop.
-      if (hasBinarySearchLoop(normalizedSource)) {
-        score += 10;
-      }
-
-      // Partition-based binary search variants.
-      if (/\bpartition\b/.test(normalizedSource)) {
-        score += 15;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Stack
-  // --------------------------------------------------
-
-  {
-    name: "Stack",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(stack|parentheses|brackets|balanced)\b/.test(normalizedProblemText)
-      ) {
-        score += 40;
-      }
-
-      if (/\b(stack|deque|arraydeque)\b/.test(normalizedSource)) {
-        score += 30;
-      }
-
-      if (hasStackOperations(normalizedSource)) {
-        score += 30;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Monotonic Stack
-  // --------------------------------------------------
-
-  {
-    name: "Monotonic Stack",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(next greater|next smaller|previous greater|previous smaller|monotonic)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 50;
-      }
-
-      if (/\b(stack|deque|arraydeque)\b/.test(normalizedSource)) {
-        score += 15;
-      }
-
-      /*
-       * Strong structural signal:
-       *
-       * while + pop + comparison
-       *
-       * This is characteristic of a monotonic-stack
-       * maintenance loop.
-       */
-      if (
-        /\bwhile\b/.test(normalizedSource) &&
-        /\.pop\(\)/.test(normalizedSource) &&
-        hasComparison(normalizedSource)
-      ) {
-        score += 45;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // BFS
-  // --------------------------------------------------
-
-  {
-    name: "BFS",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(breadth first|bfs|level order|shortest path)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 45;
-      }
-
-      if (/\b(queue|deque|linkedlist|arraydeque)\b/.test(normalizedSource)) {
-        score += 25;
-      }
-
-      if (hasQueueOperations(normalizedSource)) {
-        score += 20;
-      }
-
-      if (/\b(visited|level|distance)\b/.test(normalizedSource)) {
-        score += 15;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // DFS
-  // --------------------------------------------------
-
-  {
-    name: "DFS",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(depth first|dfs|recursive|recursion|backtrack)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 40;
-      }
-
-      if (/\bdfs\b|visited/.test(normalizedSource)) {
-        score += 25;
-      }
-
-      if (hasRecursiveCall(normalizedSource)) {
-        score += 25;
-      }
-
-      if (/\bvisited\b/.test(normalizedSource)) {
-        score += 15;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Dynamic Programming
-  // --------------------------------------------------
-
-  {
-    name: "Dynamic Programming",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(dynamic programming|dp|memoization|tabulation|subproblem|optimal substructure)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 45;
-      }
-
-      if (/\b(dp|memo|memoization|cache)\b/.test(normalizedSource)) {
-        score += 30;
+      if (hasMetadataTag(metadataTags, ["Binary Search"])) {
+        score += 100;
       }
 
       if (
-        /\b(?:int|long|boolean)\s*\[\]\s*(?:dp|memo)\b|vector<.*>\s*(?:dp|memo)\b/.test(
-          normalizedSource,
-        )
-      ) {
-        score += 20;
-      }
-
-      if (/\b(?:dp|memo)\s*\[[^]]+\]\s*=/.test(normalizedSource)) {
-        score += 20;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Greedy
-  // --------------------------------------------------
-
-  {
-    name: "Greedy",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(greedy|maximum number|minimum number|locally optimal|interval scheduling)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 50;
-      }
-
-      if (/\bsort(ed|ing)?\b/.test(normalizedSource)) {
-        score += 15;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Backtracking
-  // --------------------------------------------------
-
-  {
-    name: "Backtracking",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(backtracking|permutation|permutations|combination|combinations|subsets|n-queens)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 45;
-      }
-
-      if (/\b(backtrack|choose|unchoose)\b/.test(normalizedSource)) {
-        score += 30;
-      }
-
-      if (/\brecursive\b|return\s+dfs/.test(normalizedSource)) {
-        score += 15;
-      }
-
-      if (hasRecursiveCall(normalizedSource)) {
-        score += 15;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Heap
-  // --------------------------------------------------
-
-  {
-    name: "Heap",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(heap|priority queue|kth largest|kth smallest|top k)\b/.test(
-          normalizedProblemText,
-        )
-      ) {
-        score += 50;
-      }
-
-      if (
-        /\b(priorityqueue|priority_queue|heapq|heap)\b/.test(normalizedSource)
-      ) {
-        score += 40;
-      }
-
-      if (
-        /\b(offer|poll|add|remove)\b/.test(normalizedSource) &&
-        /\b(priorityqueue|priority_queue)\b/.test(normalizedSource)
-      ) {
-        score += 15;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Prefix Sum
-  // --------------------------------------------------
-
-  {
-    name: "Prefix Sum",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(prefix sum|range sum|subarray sum)\b/.test(normalizedProblemText)
-      ) {
-        score += 50;
-      }
-
-      if (/\b(prefix|prefixsum|presum|runningsum)\b/.test(normalizedSource)) {
-        score += 30;
-      }
-
-      if (/\b(?:sum|prefix)\s*\[[^]]+\]\s*=/.test(normalizedSource)) {
-        score += 15;
-      }
-
-      return Math.min(score, 100);
-    },
-  },
-
-  // --------------------------------------------------
-  // Union Find
-  // --------------------------------------------------
-
-  {
-    name: "Union Find",
-
-    score: ({ normalizedProblemText, normalizedSource }) => {
-      let score = 0;
-
-      if (
-        /\b(union find|disjoint set|connected components)\b/.test(
+        /\b(binary search|search space|search efficiently|find position|insert position)\b/.test(
           normalizedProblemText,
         )
       ) {
         score += 55;
       }
 
-      if (/\b(parent|find|union|rank|size)\b/.test(normalizedSource)) {
-        score += 15;
+      if (/\bmedian of two sorted arrays\b/.test(title.toLowerCase())) {
+        score += 35;
+      }
+
+      if (hasMidpointCalculation(normalizedSource)) {
+        score += 25;
       }
 
       if (
-        /\b(?:union|find)\s*\(/.test(normalizedSource) &&
-        /\bparent\b/.test(normalizedSource)
+        hasBinarySearchBoundaries(normalizedSource) &&
+        hasComparison(normalizedSource)
       ) {
-        score += 30;
+        score += 25;
       }
 
       return Math.min(score, 100);
     },
   },
 
-  // --------------------------------------------------
-  // Trie
-  // --------------------------------------------------
+  {
+    name: "Stack",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Stack"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(stack|parentheses|brackets|balanced|nested expressions|undo)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 50;
+      }
+
+      if (hasStackStructure(normalizedSource)) {
+        score += 25;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "Monotonic Stack",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Monotonic Stack"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(next greater|next smaller|previous greater|previous smaller|monotonic stack)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (
+        hasStackStructure(normalizedSource) &&
+        hasComparison(normalizedSource)
+      ) {
+        score += 25;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "BFS",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (
+        hasMetadataTag(metadataTags, [
+          "Breadth-First Search",
+          "Breadth First Search",
+          "BFS",
+        ])
+      ) {
+        score += 100;
+      }
+
+      if (
+        /\b(breadth first|breadth-first|bfs|level order|level by level)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (
+        /\b(shortest path|minimum steps|minimum distance)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 15;
+      }
+
+      if (hasQueueStructure(normalizedSource)) {
+        score += 20;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "DFS",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (
+        hasMetadataTag(metadataTags, [
+          "Depth-First Search",
+          "Depth First Search",
+          "DFS",
+        ])
+      ) {
+        score += 100;
+      }
+
+      if (
+        /\b(depth first|depth-first|dfs|recursive traversal)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (hasRecursiveStructure(normalizedSource)) {
+        score += 20;
+      }
+
+      if (hasTraversalStructure(normalizedSource)) {
+        score += 10;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "Dynamic Programming",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Dynamic Programming", "DP"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(dynamic programming|memoization|tabulation|optimal substructure|overlapping subproblems)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (
+        /\b(dp|memo|memoization|cache|state|transition)\b/.test(
+          normalizedSource,
+        )
+      ) {
+        score += 20;
+      }
+
+      if (hasIndexAccess(normalizedSource) && hasAssignment(normalizedSource)) {
+        score += 15;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "Greedy",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Greedy"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(greedy|locally optimal|interval scheduling|maximum number|minimum number)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (hasSortingStructure(normalizedSource)) {
+        score += 15;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "Backtracking",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Backtracking"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(backtracking|permutations|combinations|subsets|n-queens|generate all|all possible)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 60;
+      }
+
+      if (/\b(choose|unchoose|backtrack)\b/.test(normalizedSource)) {
+        score += 20;
+      }
+
+      if (hasRecursiveStructure(normalizedSource)) {
+        score += 20;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "Heap",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Heap", "Priority Queue"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(heap|priority queue|kth largest|kth smallest|top k)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (hasHeapStructure(normalizedSource)) {
+        score += 25;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "Prefix Sum",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Prefix Sum"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(prefix sum|range sum|subarray sum|cumulative sum|running sum)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (
+        /\b(prefix|presum|prefixsum|runningsum|cumulative)\b/.test(
+          normalizedSource,
+        )
+      ) {
+        score += 15;
+      }
+
+      if (hasIndexAccess(normalizedSource) && hasAssignment(normalizedSource)) {
+        score += 10;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
+
+  {
+    name: "Union Find",
+
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
+      let score = 0;
+
+      if (hasMetadataTag(metadataTags, ["Union Find", "Disjoint Set"])) {
+        score += 100;
+      }
+
+      if (
+        /\b(union find|disjoint set|connected components)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
+      }
+
+      if (/\b(parent|rank|representative|component)\b/.test(normalizedSource)) {
+        score += 20;
+      }
+
+      return Math.min(score, 100);
+    },
+  },
 
   {
     name: "Trie",
 
-    score: ({ normalizedProblemText, normalizedSource }) => {
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
       let score = 0;
 
-      if (/\b(trie|prefix tree|autocomplete)\b/.test(normalizedProblemText)) {
-        score += 60;
+      if (hasMetadataTag(metadataTags, ["Trie"])) {
+        score += 100;
       }
 
-      if (/\b(trienode|trie|children)\b/.test(normalizedSource)) {
-        score += 25;
+      if (
+        /\b(trie|prefix tree|autocomplete|word dictionary)\b/.test(
+          normalizedProblemText,
+        )
+      ) {
+        score += 65;
       }
 
-      if (/\bchildren\s*\[/.test(normalizedSource)) {
-        score += 15;
+      if (/\b(trie|trienode|children|prefix)\b/.test(normalizedSource)) {
+        score += 20;
+      }
+
+      if (hasIndexAccess(normalizedSource)) {
+        score += 10;
       }
 
       return Math.min(score, 100);
     },
   },
 
-  // --------------------------------------------------
-  // Sorting
-  // --------------------------------------------------
-
   {
     name: "Sorting",
 
-    score: ({ normalizedProblemText, normalizedSource }) => {
+    score: ({ metadataTags, normalizedProblemText, normalizedSource }) => {
       let score = 0;
 
-      if (/\b(sort|sorted|sorting|order)\b/.test(normalizedProblemText)) {
-        score += 35;
+      if (hasMetadataTag(metadataTags, ["Sorting"])) {
+        score += 100;
       }
 
-      if (/\.sort\(|arrays\.sort|sort\(/.test(normalizedSource)) {
-        score += 45;
+      if (
+        /\b(sort|sorted|sorting|order|ordered)\b/.test(normalizedProblemText)
+      ) {
+        score += 50;
+      }
+
+      if (hasSortingStructure(normalizedSource)) {
+        score += 35;
       }
 
       return Math.min(score, 100);
