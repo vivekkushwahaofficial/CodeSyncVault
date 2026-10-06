@@ -54,17 +54,10 @@ export function generatePortfolioReadme(index: RepositoryIndex): string {
     "",
     "## 📑 Table of Contents",
     "",
-    "- [📊 Overview](#-overview)",
-    "- [📈 Progress](#-progress)",
-    "- [🔥 Coding Activity](#-coding-activity)",
-    "- [🧩 Pattern Index](#-pattern-index)",
-    "- [📚 Topic Index](#-topic-index)",
-    "- [💻 Languages](#-languages)",
-    "- [🌐 Platforms](#-platforms)",
-    "- [🕒 Recently Solved](#-recently-solved)",
     "- [📚 Solution Documentation](#-solution-documentation)",
     "- [📈 Detailed Statistics](#-detailed-statistics)",
-    "- [⚙️ Workflow & Automation](#-workflow--automation)",
+    "- [⚙️ Workflow & Automation](#️-workflow--automation)",
+    "- [🗂 Repository](#-repository)",
     "",
     "## 📊 Overview",
     "",
@@ -339,7 +332,10 @@ function generateCountTable(
   return [
     `| ${label} | Problems |`,
     "| --- | ---: |",
-    ...entries.map(([name, count]) => `| ${escapeMarkdown(name)} | ${count} |`),
+    ...entries.map(
+      ([name, count]) =>
+        `| ${escapeMarkdown(formatPlatform(name))} | ${count} |`,
+    ),
   ].join("\n");
 }
 
@@ -363,7 +359,7 @@ function generateRecentSolutions(solutions: RepositorySolution[]): string {
         `| [${escapeMarkdown(metadata.title)}](${readmePath}) | ` +
         `${capitalize(metadata.difficulty)} | ` +
         `${escapeMarkdown(metadata.language)} | ` +
-        `${escapeMarkdown(metadata.platform)} | ` +
+        `${escapeMarkdown(formatPlatform(metadata.platform))} | ` +
         `${formatDate(solution.solvedAt)} |`
       );
     }),
@@ -437,4 +433,20 @@ function capitalize(value: string): string {
   }
 
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+function formatPlatform(platform: string): string {
+  const normalized = platform.trim().toLowerCase();
+
+  const platformNames: Record<string, string> = {
+    gfg: "GeeksforGeeks",
+    geeksforgeeks: "GeeksforGeeks",
+    leetcode: "LeetCode",
+    hackerrank: "HackerRank",
+    codechef: "CodeChef",
+    codeforces: "Codeforces",
+    atcoder: "AtCoder",
+    codingninjas: "Coding Ninjas",
+  };
+
+  return platformNames[normalized] ?? platform;
 }
