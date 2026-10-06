@@ -197,7 +197,7 @@ export const PATTERN_RULES: PatternRule[] = [
 
       if (
         hasProblemSignal(normalizedProblemText, [
-          /\bhash table\b/,
+          /\bhash tables?\b/,
           /\bhash map\b/,
           /\bfrequency map\b/,
           /\bdictionary\b/,
