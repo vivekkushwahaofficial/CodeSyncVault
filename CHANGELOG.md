@@ -2,6 +2,20 @@
 
 All notable changes to CodeSyncVault are documented in this file.
 
+## [1.4.3] — Documentation & Platform Improvements
+
+### Added
+
+- Added rich pattern documentation with problem tables.
+- Added rich topic documentation with problem tables.
+- Improved README documentation and navigation.
+- Improved platform display names in generated documentation.
+- New GeeksforGeeks solutions now use `GeeksforGeeks` as the platform value.
+
+### Compatibility
+
+- Existing repositories using the legacy `gfg` platform value remain compatible.
+
 ## [1.4.2] — CodeSyncVault Branding & Extension Update
 
 ### Added
@@ -189,6 +203,7 @@ All notable changes to CodeSyncVault are documented in this file.
 - Python
 
 ---
+[1.4.3]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.4.3
 
 [1.4.2]: https://github.com/vivekkushwahaofficial/CodeSyncVault/releases/tag/v1.4.2
 

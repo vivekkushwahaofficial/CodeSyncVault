@@ -2,7 +2,7 @@
 
 > Automatically detect, organize, and synchronize accepted coding solutions from supported coding platforms to GitHub.
 
-![Version](https://img.shields.io/badge/version-v1.4.2-blue)
+![Version](https://img.shields.io/badge/version-v1.4.3-blue)
 ![Status](https://img.shields.io/badge/status-Active-success)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 ![Platforms](https://img.shields.io/badge/platforms-3-orange)
@@ -499,16 +499,17 @@ cd apps/backend
 ---
 # 📊 Current Release
 
-## CodeSyncVault v1.4.2
+## CodeSyncVault v1.4.3
 
 ### What's Updated
 
-v1.4.2 includes:
+v1.4.3 includes:
 
-* 🔥 Coding Streak tracking
-* 🔐 Improved GitHub connection and authentication
-* 📊 Improved extension dashboard
-* ⚙️ Improved repository setup flow
+- Rich pattern and topic documentation
+- Improved solution documentation tables
+- Improved platform display names
+- GeeksforGeeks is now used for new GFG solution metadata
+- Existing `gfg` repositories remain compatible
 
 ### Supported Platforms
 

@@ -93,7 +93,7 @@ export default function RepositorySetup({
 
       const repository = await createRepository({
         name: repositoryName,
-        description: "Repository created by CodeSyncVault",
+        description: "Automatically organized coding solutions synced to GitHub by CodeSyncVault.",
         private: false,
       });
 
