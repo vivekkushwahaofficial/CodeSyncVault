@@ -4,13 +4,9 @@ import type {
   PatternRuleContext,
 } from "./types";
 
-import {
-  PATTERN_RULES,
-} from "./rules/pattern-rules";
+import { PATTERN_RULES } from "./rules/pattern-rules";
 
-import {
-  TOPIC_RULES,
-} from "./rules/topic-rules";
+import { TOPIC_RULES } from "./rules/topic-rules";
 
 const PATTERN_THRESHOLD = 55;
 const TOPIC_THRESHOLD = 45;
@@ -37,105 +33,42 @@ const MAX_TAGS = 8;
  * - safe for browser-extension execution
  */
 export class PatternEngine {
-
   /**
    * Analyzes one accepted coding solution.
    */
-  static analyze(
-    input: PatternEngineInput,
-  ): PatternClassification {
+  static analyze(input: PatternEngineInput): PatternClassification {
+    PatternEngine.validateInput(input);
 
-    PatternEngine.validateInput(
-      input,
+    const context = PatternEngine.createContext(input);
+
+    const patterns = PATTERN_RULES.map((rule) => ({
+      name: rule.name,
+
+      score: rule.score(context),
+    }))
+      .filter((result) => result.score >= PATTERN_THRESHOLD)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, MAX_PATTERNS)
+      .map((result) => result.name);
+
+    const topics = TOPIC_RULES.map((rule) => ({
+      name: rule.name,
+
+      score: rule.score(context),
+    }))
+      .filter((result) => result.score >= TOPIC_THRESHOLD)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, MAX_TOPICS)
+      .map((result) => result.name);
+
+    const tags = PatternEngine.generateTags(context, patterns, topics);
+
+    const timeComplexity = PatternEngine.inferTimeComplexity(patterns, context);
+
+    const spaceComplexity = PatternEngine.inferSpaceComplexity(
+      patterns,
+      context,
     );
-
-    const context =
-      PatternEngine.createContext(
-        input,
-      );
-
-    const patterns =
-      PATTERN_RULES
-        .map(
-          (rule) => ({
-            name:
-              rule.name,
-
-            score:
-              rule.score(
-                context,
-              ),
-          }),
-        )
-        .filter(
-          (result) =>
-            result.score >=
-            PATTERN_THRESHOLD,
-        )
-        .sort(
-          (a, b) =>
-            b.score -
-            a.score,
-        )
-        .slice(
-          0,
-          MAX_PATTERNS,
-        )
-        .map(
-          (result) =>
-            result.name,
-        );
-
-    const topics =
-      TOPIC_RULES
-        .map(
-          (rule) => ({
-            name:
-              rule.name,
-
-            score:
-              rule.score(
-                context,
-              ),
-          }),
-        )
-        .filter(
-          (result) =>
-            result.score >=
-            TOPIC_THRESHOLD,
-        )
-        .sort(
-          (a, b) =>
-            b.score -
-            a.score,
-        )
-        .slice(
-          0,
-          MAX_TOPICS,
-        )
-        .map(
-          (result) =>
-            result.name,
-        );
-
-    const tags =
-      PatternEngine.generateTags(
-        context,
-        patterns,
-        topics,
-      );
-
-    const timeComplexity =
-      PatternEngine.inferTimeComplexity(
-        patterns,
-        context,
-      );
-
-    const spaceComplexity =
-      PatternEngine.inferSpaceComplexity(
-        patterns,
-        context,
-      );
 
     const result: PatternClassification = {
       patterns,
@@ -153,10 +86,7 @@ export class PatternEngine {
         : {}),
     };
 
-    console.log(
-      "[CodeSyncVault] Pattern Engine classification:",
-      result,
-    );
+    console.log("[CodeSyncVault] Pattern Engine classification:", result);
 
     return result;
   }
@@ -164,33 +94,33 @@ export class PatternEngine {
   /**
    * Creates a normalized rule context.
    */
-  private static createContext(
-    input: PatternEngineInput,
-  ): PatternRuleContext {
+  private static createContext(input: PatternEngineInput): PatternRuleContext {
+    const problemText = PatternEngine.extractProblemText(
+      input.problemStatement,
+    );
 
-    const problemText =
-      PatternEngine.extractProblemText(
-        input.problemStatement,
-      );
-
-    const sourceCode =
-      input.sourceCode.trim();
+    const sourceCode = input.sourceCode.trim();
 
     return {
-      title:
-        input.metadata.title.trim(),
+      title: input.metadata.title.trim(),
+
+      metadataTags: input.metadata.tags
+        ? [
+            ...new Set(
+              input.metadata.tags
+                .map((tag) => tag.trim())
+                .filter((tag) => tag.length > 0),
+            ),
+          ]
+        : [],
 
       problemText,
 
       sourceCode,
 
-      normalizedSource:
-        sourceCode
-          .toLowerCase(),
+      normalizedSource: sourceCode.toLowerCase(),
 
-      normalizedProblemText:
-        problemText
-          .toLowerCase(),
+      normalizedProblemText: problemText.toLowerCase(),
     };
   }
 
@@ -198,71 +128,44 @@ export class PatternEngine {
    * Safely converts platform-specific problem
    * statement structures into searchable text.
    */
-  private static extractProblemText(
-    statement: unknown,
-  ): string {
-
-    if (
-      typeof statement ===
-      "string"
-    ) {
+  private static extractProblemText(statement: unknown): string {
+    if (typeof statement === "string") {
       return statement.trim();
     }
 
-    if (
-      statement === null ||
-      statement === undefined
-    ) {
+    if (statement === null || statement === undefined) {
       return "";
     }
 
-    if (
-      typeof statement ===
-      "object"
-    ) {
-
-      const record =
-        statement as Record<
-          string,
-          unknown
-        >;
+    if (typeof statement === "object") {
+      const record = statement as Record<string, unknown>;
 
       const preferredKeys = [
         "title",
         "description",
         "content",
+        "html",
         "text",
         "body",
         "statement",
       ];
 
-      const values =
-        preferredKeys
-          .map(
-            (key) =>
-              record[key],
-          )
-          .filter(
-            (value) =>
-              typeof value ===
-              "string",
-          )
-          .map(
-            (value) =>
-              String(value),
-          );
+      const values = preferredKeys
+        .map((key) => record[key])
+        .filter((value) => typeof value === "string")
+        .map((value) => String(value));
 
-      if (
-        values.length > 0
-      ) {
-        return values.join("\n").trim();
+      if (values.length > 0) {
+        return values
+          .join("\n")
+          .replace(/<[^>]*>/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
       }
     }
 
     try {
-      return JSON.stringify(
-        statement,
-      );
+      return JSON.stringify(statement);
     } catch {
       return "";
     }
@@ -277,92 +180,36 @@ export class PatternEngine {
     patterns: string[],
     topics: string[],
   ): string[] {
-
-    const tags =
-      new Set<string>();
-
-    for (
-      const pattern of patterns
-    ) {
-      tags.add(
-        pattern,
-      );
+    const tags = new Set<string>(context.metadataTags);
+    for (const pattern of patterns) {
+      tags.add(pattern);
     }
 
-    for (
-      const topic of topics
-    ) {
-      tags.add(
-        topic,
-      );
+    for (const topic of topics) {
+      tags.add(topic);
     }
 
-    if (
-      /\b(sorted|sorting)\b/
-        .test(
-          context.normalizedProblemText,
-        )
-    ) {
-      tags.add(
-        "Sorting",
-      );
+    if (/\b(sorted|sorting)\b/.test(context.normalizedProblemText)) {
+      tags.add("Sorting");
     }
 
-    if (
-      /\b(subarray|subarray)\b/
-        .test(
-          context.normalizedProblemText,
-        )
-    ) {
-      tags.add(
-        "Subarray",
-      );
+    if (/\b(subarray|sub-array)\b/.test(context.normalizedProblemText)) {
+      tags.add("Subarray");
     }
 
-    if (
-      /\b(substring)\b/
-        .test(
-          context.normalizedProblemText,
-        )
-    ) {
-      tags.add(
-        "Substring",
-      );
+    if (/\b(substring)\b/.test(context.normalizedProblemText)) {
+      tags.add("Substring");
     }
 
-    if (
-      /\b(recursion|recursive)\b/
-        .test(
-          context.normalizedSource,
-        )
-    ) {
-      tags.add(
-        "Recursion",
-      );
+    if (/\b(recursion|recursive)\b/.test(context.normalizedSource)) {
+      tags.add("Recursion");
     }
 
-    if (
-      /\b(binary search)\b/
-        .test(
-          context.normalizedProblemText,
-        )
-    ) {
-      tags.add(
-        "Binary Search",
-      );
+    if (/\b(binary search)\b/.test(context.normalizedProblemText)) {
+      tags.add("Binary Search");
     }
 
-    return [
-      ...tags,
-    ]
-      .filter(
-        (tag) =>
-          tag.trim().length > 0,
-      )
-      .slice(
-        0,
-        MAX_TAGS,
-      );
+    return [...tags].filter((tag) => tag.trim().length > 0).slice(0, MAX_TAGS);
   }
 
   /**
@@ -375,39 +222,22 @@ export class PatternEngine {
     patterns: string[],
     context: PatternRuleContext,
   ): string | undefined {
-
-    if (
-      patterns.includes(
-        "Binary Search",
-      )
-    ) {
+    if (patterns.includes("Binary Search")) {
       return "O(log n)";
     }
 
     if (
-      patterns.includes(
-        "Hash Map",
-      ) &&
-      !PatternEngine.hasNestedLoop(
-        context.sourceCode,
-      )
+      patterns.includes("Hash Map") &&
+      !PatternEngine.hasNestedLoop(context.sourceCode)
     ) {
       return "O(n)";
     }
 
-    if (
-      patterns.includes(
-        "Sliding Window",
-      )
-    ) {
+    if (patterns.includes("Sliding Window")) {
       return "O(n)";
     }
 
-    if (
-      patterns.includes(
-        "Two Pointer",
-      )
-    ) {
+    if (patterns.includes("Two Pointer")) {
       return "O(n)";
     }
 
@@ -422,40 +252,24 @@ export class PatternEngine {
     patterns: string[],
     context: PatternRuleContext,
   ): string | undefined {
+    if (patterns.includes("Hash Map")) {
+      return "O(n)";
+    }
 
     if (
-      patterns.includes(
-        "Hash Map",
+      patterns.includes("Sliding Window") &&
+      /\b(set|hashset|hashmap|map|dictionary|dict)\b/.test(
+        context.normalizedSource,
       )
     ) {
       return "O(n)";
     }
 
-    if (
-      patterns.includes(
-        "Sliding Window",
-      ) &&
-      /\b(set|hashset|hashmap|map|dictionary|dict)\b/
-        .test(
-          context.normalizedSource,
-        )
-    ) {
-      return "O(n)";
-    }
-
-    if (
-      patterns.includes(
-        "Binary Search",
-      )
-    ) {
+    if (patterns.includes("Binary Search")) {
       return "O(1)";
     }
 
-    if (
-      patterns.includes(
-        "Two Pointer",
-      )
-    ) {
+    if (patterns.includes("Two Pointer")) {
       return "O(1)";
     }
 
@@ -469,16 +283,8 @@ export class PatternEngine {
    * us from claiming O(n) for an obvious nested
    * loop implementation.
    */
-  private static hasNestedLoop(
-    sourceCode: string,
-  ): boolean {
-
-    const loopCount =
-      (
-        sourceCode.match(
-          /\b(for|while)\b/g,
-        ) ?? []
-      ).length;
+  private static hasNestedLoop(sourceCode: string): boolean {
+    const loopCount = (sourceCode.match(/\b(for|while)\b/g) ?? []).length;
 
     return loopCount >= 2;
   }
@@ -486,35 +292,20 @@ export class PatternEngine {
   /**
    * Validates required input.
    */
-  private static validateInput(
-    input: PatternEngineInput,
-  ): void {
-
+  private static validateInput(input: PatternEngineInput): void {
     if (!input) {
-      throw new Error(
-        "Pattern Engine input is missing.",
-      );
+      throw new Error("Pattern Engine input is missing.");
     }
 
-    if (
-      !input.metadata
-    ) {
-      throw new Error(
-        "Pattern Engine metadata is missing.",
-      );
+    if (!input.metadata) {
+      throw new Error("Pattern Engine metadata is missing.");
     }
 
-    if (
-      !input.metadata.title?.trim()
-    ) {
-      throw new Error(
-        "Pattern Engine problem title is missing.",
-      );
+    if (!input.metadata.title?.trim()) {
+      throw new Error("Pattern Engine problem title is missing.");
     }
 
-    if (
-      !input.sourceCode?.trim()
-    ) {
+    if (!input.sourceCode?.trim()) {
       throw new Error(
         `Pattern Engine source code is missing for "${input.metadata.title}".`,
       );
