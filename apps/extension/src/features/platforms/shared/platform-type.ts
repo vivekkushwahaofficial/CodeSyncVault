@@ -3,6 +3,6 @@
  */
 export enum PlatformType {
   LEETCODE = "LeetCode",
-  GFG = "GeeksforGeeks",
+  GFG = "gfg",
   HACKERRANK = "HackerRank",
 }

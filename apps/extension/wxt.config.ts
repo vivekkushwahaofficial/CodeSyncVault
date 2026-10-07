@@ -10,7 +10,7 @@ export default defineConfig({
 
     short_name: "CodeSyncVault",
 
-    version: "1.4.3",
+    version: "1.4.5",
 
     description: "Automatically detect, organize, and sync your accepted coding solutions from LeetCode, GeeksforGeeks, and HackerRank to GitHub.",
 
