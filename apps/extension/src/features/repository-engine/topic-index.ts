@@ -1,50 +1,100 @@
 import type { RepositorySolution } from "./types";
 
 /**
- * Builds a Markdown index for one topic.
+ * Builds a rich Markdown index for one topic.
  */
 export function generateTopicIndex(
   topic: string,
   solutions: RepositorySolution[],
 ): string {
-  const matchingSolutions =
-    solutions.filter(
-      (solution) =>
-        solution.metadata.topics?.includes(topic),
-    );
+  const matchingSolutions = solutions.filter((solution) =>
+    solution.metadata.topics?.includes(topic),
+  );
 
   const lines: string[] = [
     `# ${topic}`,
+    "",
+    `> ${matchingSolutions.length} ${
+      matchingSolutions.length === 1 ? "problem" : "problems"
+    } classified under this topic.`,
+    "",
+    "[← Back to README](../README.md) · [All Problems](../docs/AllProblems.md)",
     "",
     "## Problems",
     "",
   ];
 
   if (matchingSolutions.length === 0) {
-    lines.push(
-      "_No problems classified under this topic yet._",
-      "",
-    );
-
+    lines.push("_No problems classified under this topic yet._", "");
     return lines.join("\n");
   }
 
-  for (const solution of matchingSolutions) {
-    const metadata =
-      solution.metadata;
+  lines.push(
+    "| Problem | Difficulty | Primary Tags | Language | Platform | Solution |",
+    "| --- | --- | --- | --- | --- | --- |",
+  );
 
-    const readmePath =
-      solution.path.replace(
-        /\/Solution\.[^/]+$/,
-        "/README.md",
-      );
+  for (const solution of matchingSolutions) {
+    const metadata = solution.metadata;
+
+    const readmePath = solution.path.replace(
+      /\/Solution\.[^/]+$/,
+      "/README.md",
+    );
+
+    const primaryTags = metadata.tags?.length
+      ? metadata.tags.join(", ")
+      : metadata.patterns?.length
+        ? metadata.patterns.join(", ")
+        : metadata.topics?.length
+          ? metadata.topics.join(", ")
+          : "—";
 
     lines.push(
-      `- [${metadata.title}](../${readmePath}) — ${metadata.platform} · ${metadata.language} · ${metadata.difficulty}`,
+      `| ${escapeMarkdown(metadata.title)} | ${escapeMarkdown(
+        capitalize(metadata.difficulty),
+      )} | ${escapeMarkdown(primaryTags)} | ${escapeMarkdown(
+        metadata.language,
+      )} | ${escapeMarkdown(formatPlatform(metadata.platform))} | [View Solution](../${readmePath}) |`,
     );
   }
 
-  lines.push("");
+  lines.push(
+    "",
+    "---",
+    "",
+    "Generated automatically by **CodeSyncVault**.",
+    "",
+  );
 
   return lines.join("\n");
+}
+
+function formatPlatform(platform: string): string {
+  const normalized = platform.trim().toLowerCase();
+
+  const names: Record<string, string> = {
+    gfg: "GeeksforGeeks",
+    geeksforgeeks: "GeeksforGeeks",
+    leetcode: "LeetCode",
+    hackerrank: "HackerRank",
+    codechef: "CodeChef",
+    codeforces: "Codeforces",
+    atcoder: "AtCoder",
+    codingninjas: "Coding Ninjas",
+  };
+
+  return names[normalized] ?? platform;
+}
+
+function capitalize(value: string): string {
+  if (!value) {
+    return value;
+  }
+
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function escapeMarkdown(value: string): string {
+  return value.replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
 }

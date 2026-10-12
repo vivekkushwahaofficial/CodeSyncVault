@@ -9,6 +9,8 @@ import { saveSelectedRepository } from "../../../src/features/github/github-auth
 
 import { getGithubUser } from "../../../src/features/github/api/github-user";
 
+import { reanalyzeConnectedRepository } from "../../../src/features/repository-engine/repository-reanalysis-service";
+
 import type { GithubRepository } from "../../../src/features/github/api/github-create-repository";
 
 interface RepositorySetupProps {
@@ -82,6 +84,8 @@ export default function RepositorySetup({
           repository.default_branch,
         );
 
+        await reanalyzeConnectedRepository();
+
         onRepositoryConfigured();
 
         return;
@@ -89,7 +93,7 @@ export default function RepositorySetup({
 
       const repository = await createRepository({
         name: repositoryName,
-        description: "Repository created by CodeSyncVault",
+        description: "Automatically organized coding solutions synced to GitHub by CodeSyncVault.",
         private: false,
       });
 

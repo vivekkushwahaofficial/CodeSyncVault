@@ -51,9 +51,21 @@ export interface PatternClassification {
 
 export interface PatternRuleContext {
   title: string;
+
+  /**
+   * Official/platform-provided metadata tags.
+   *
+   * Example:
+   * LeetCode -> Array, Hash Table, Two Pointers
+   */
+  metadataTags: string[];
+
   problemText: string;
+
   sourceCode: string;
+
   normalizedSource: string;
+
   normalizedProblemText: string;
 }
 
@@ -63,9 +75,7 @@ export interface PatternRule {
   /**
    * Returns a score from 0 to 100.
    */
-  score(
-    context: PatternRuleContext,
-  ): number;
+  score(context: PatternRuleContext): number;
 }
 
 export interface TopicRule {
@@ -74,7 +84,5 @@ export interface TopicRule {
   /**
    * Returns a score from 0 to 100.
    */
-  score(
-    context: PatternRuleContext,
-  ): number;
+  score(context: PatternRuleContext): number;
 }

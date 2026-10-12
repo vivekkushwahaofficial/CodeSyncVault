@@ -16,5 +16,7 @@ export interface ProblemMetadata {
 
   url: string;
 
+  tags?: string[];
+
   solvedAt: Date;
 }
