@@ -1,6 +1,6 @@
 # 🚀 CodeSyncVault
 
-> Automatically detect, organize, and synchronize accepted coding solutions from supported coding platforms to GitHub.
+>Automatically detect, organize, and synchronize accepted coding solutions from supported coding platforms to GitHub.
 
 ![Version](https://img.shields.io/badge/version-v1.4.5-blue)
 ![Status](https://img.shields.io/badge/status-Active-success)
@@ -22,6 +22,7 @@ Instead of manually copying solutions, creating folders, generating documentatio
 - 🔵 HackerRank
 
 ---
+
 ## 🚀 Install CodeSyncVault
 
 [![Install from Chrome Web Store](https://img.shields.io/badge/Install-Chrome%20Web%20Store-blue?logo=googlechrome)](https://chromewebstore.google.com/detail/codevault/loigjljekeahnjccojnnkmagibghofbn)
@@ -31,6 +32,7 @@ Instead of manually copying solutions, creating folders, generating documentatio
 🔗 [LinkedIn](https://www.linkedin.com/company/codesyncvault/)
 
 ---
+
 # ✨ Features
 
 ## 🔄 Automatic Solution Detection
@@ -45,14 +47,14 @@ Simply solve and submit a problem normally. Once the submission is accepted, Cod
 
 CodeSyncVault currently supports:
 
-| Platform | Status |
-| --- | --- |
-| LeetCode | ✅ Supported |
+| Platform      | Status       |
+| ------------- | ------------ |
+| LeetCode      | ✅ Supported |
 | GeeksforGeeks | ✅ Supported |
-| HackerRank | ✅ Supported |
-| Codeforces | 🚧 Planned |
-| CodeChef | 🚧 Planned |
-| AtCoder | 🚧 Planned |
+| HackerRank    | ✅ Supported |
+| Codeforces    | 🚧 Planned   |
+| CodeChef      | 🚧 Planned   |
+| AtCoder       | 🚧 Planned   |
 
 ---
 
@@ -68,22 +70,61 @@ The repository structure is designed to support multiple programming languages i
 
 ## 🧠 Metadata Extraction
 
-CodeSyncVault extracts and maintains metadata such as:
+CodeSyncVault extracts, normalizes, and maintains problem metadata from supported coding platforms.
+
+Metadata includes:
 
 - Problem name
 - Problem slug
 - Difficulty
 - Platform
 - Programming language
-- Tags
-- Pattern
-- Topic
-- Time complexity
-- Space complexity
+- Tags (where available)
+- Automatically classified patterns
+- Automatically classified topics
+- Estimated time complexity (supported patterns)
+- Estimated space complexity (supported patterns)
 - Solved date
-- Submission information
+- Submission information (where available)
+
+Metadata availability depends on the platform and its submission data.
+
+**Note:** Complexity values are heuristic estimates for supported patterns, not guaranteed results of complete static code analysis.
 
 ---
+
+## 🧩 Pattern and Topic Classification
+
+CodeSyncVault includes a local, rule-based classification engine.
+
+It classifies supported solutions using predefined rules and available problem metadata.
+
+Classification capabilities include:
+
+- Pattern detection
+- Topic classification
+- Rule-based categorization
+- Automatic metadata indexing
+
+Examples of supported patterns include:
+
+- Arrays
+- Strings
+- Binary Search
+- Two Pointers
+- Sliding Window
+- Hash Map
+- Stack
+- Queue
+- Linked List
+- Trees
+- Graphs
+- Dynamic Programming
+- Greedy
+
+Classification runs locally using predefined rules without requiring an external AI API.
+
+**Note:** Classification accuracy depends on the available problem metadata and supported rules.
 
 ## 📄 Automatic README Generation
 
@@ -107,7 +148,7 @@ Approach
 Complexity
 Time: O(n)
 Space: O(n)
-````
+```
 
 CodeSyncVault also automatically generates a repository-level portfolio README.
 
@@ -119,18 +160,18 @@ The Repository Engine automatically generates coding statistics from the solutio
 
 Statistics include:
 
-* 🏆 Total problems solved
-* 🔵 Basic problems
-* 🟢 Easy problems
-* 🟠 Medium problems
-* 🔴 Hard problems
-* 🔥 Coding streak
-* 🌐 Platform statistics
-* 💻 Language statistics
-* 🧩 Pattern statistics
-* 📚 Topic statistics
-* 🕒 Recently solved problems
-* 🔥 Coding activity
+- 🏆 Total problems solved
+- 🔵 Basic problems
+- 🟢 Easy problems
+- 🟠 Medium problems
+- 🔴 Hard problems
+- 🔥 Coding streak
+- 🌐 Platform statistics
+- 💻 Language statistics
+- 🧩 Pattern statistics
+- 📚 Topic statistics
+- 🕒 Recently solved problems
+- 🔥 Coding activity
 
 No manual README editing is required.
 
@@ -146,7 +187,7 @@ Generated at:
 .codevault/activity.svg
 ```
 
-The heatmap represents coding activity across the latest 365 days.
+The heatmap displays coding activity across a 365-day window ending at the latest valid recorded solution date in the repository index.
 
 Activity intensity is deterministic:
 
@@ -218,7 +259,7 @@ Solutions are automatically organized by platform, language, difficulty, and pro
 
 Example:
 
-```
+```text
 Repository
 │
 ├── LeetCode
@@ -243,7 +284,9 @@ Repository
                 └── README.md
 ```
 
-The exact generated path can be configured and managed by the repository engine.
+The Repository Engine automatically generates a consistent directory structure based on the platform, programming language, difficulty, and problem name.
+
+Each solution is stored with its corresponding source-code file and generated README documentation.
 
 ---
 
@@ -261,14 +304,14 @@ The solution index acts as the source of truth for repository statistics.
 
 The Repository Engine uses this information to generate:
 
-* Portfolio README
-* Difficulty statistics
-* Platform statistics
-* Language statistics
-* Pattern statistics
-* Topic statistics
-* Recently solved problems
-* Coding activity heatmap
+- Portfolio README
+- Difficulty statistics
+- Platform statistics
+- Language statistics
+- Pattern statistics
+- Topic statistics
+- Recently solved problems
+- Coding activity heatmap
 
 ---
 
@@ -306,77 +349,120 @@ The Repository Engine uses this information to generate:
 └──────────────────────────┘
 ```
 
----
-
 # 🏗️ Architecture
 
+CodeSyncVault follows a modular browser-extension architecture with a Spring Boot backend for GitHub OAuth authentication.
+
 ```text
-Coding Platform
-      │
-      ▼
+Coding Platforms
+       |
+       v
 Browser Extension
-      │
-      ├── Platform Detector
-      │
-      ├── Metadata Extractor
-      │
-      ├── Solution Extractor
-      │
-      ├── Repository Engine
-      │
-      ├── GitHub Sync
-      │
-      └── Settings
-              │
-              ▼
-        GitHub Repository
-              │
-              ├── Solutions
-              ├── .codevault/index.json
-              ├── .codevault/activity.svg
-              └── README.md
+       |
+       v
+Platform Detection
+       |
+       v
+Metadata and Solution Extraction
+       |
+       v
+Pattern and Topic Classification
+       |
+       v
+Repository Engine
+       |
+       +------------------+
+       |         |        |
+       v         v        v
+   Solution   Portfolio  Activity
+    Files      README    Heatmap
+       |         |        |
+       +---------+--------+
+                 |
+                 v
+          GitHub Sync Service
+                 |
+                 v
+          GitHub Repository
+
+
+GitHub Authentication:
+
+Browser Extension
+       |
+       v
+Spring Boot Backend
+       |
+       v
+GitHub OAuth
+       |
+       v
+Access Token Returned to Extension
 ```
 
----
+### Component Responsibilities
+
+**Browser Extension**
+
+- Platform detection
+- Metadata extraction
+- Solution extraction
+- Pattern and topic classification
+- Repository generation
+- GitHub synchronization
+
+**Spring Boot Backend**
+
+- GitHub OAuth authorization-code exchange
+- Backend health monitoring
+
+**GitHub Repository**
+
+- Solution storage
+- Repository metadata index
+- Generated README documentation
+- Coding activity heatmap
+
+````
 
 # 🛠️ Tech Stack
 
 ## Browser Extension
 
-* TypeScript
-* React
-* WXT
-* Chrome Extension Manifest V3
+- TypeScript
+- React
+- WXT
+- Chrome Extension Manifest V3
 
 ## Backend
 
-* Java
-* Spring Boot
-* Spring Security
-* OAuth2
+- Java
+- Spring Boot
+- Spring Security
+- OAuth2
 
 ## GitHub Integration
 
-* GitHub OAuth
-* GitHub REST API
-* Octokit
+- GitHub OAuth
+- GitHub REST API
+- Octokit
 
 ## Data & Architecture
 
-* Zustand
-* Zod
-* Dexie
-* TypeScript
-* Feature-based architecture
+- Zustand
+- Zod
+- Dexie
+- TypeScript
+- Feature-based architecture
 
 ## Development
 
-* pnpm
-* Turborepo
-* Vite
-* Biome
-* Git
-* GitHub
+- pnpm
+- Turborepo
+- Vite
+- Biome
+- Git
+- GitHub
 
 ---
 
@@ -409,7 +495,7 @@ CodeSyncVault
 ├── docs
 │
 └── scripts
-```
+````
 
 ---
 
@@ -497,6 +583,7 @@ cd apps/backend
 ```
 
 ---
+
 # 📊 Current Release
 
 ## CodeSyncVault v1.4.5
@@ -526,25 +613,29 @@ CodeSyncVault is actively evolving.
 
 Planned support includes:
 
-* Codeforces
-* CodeChef
-* AtCoder
-* Coding Ninjas
-* Additional coding platforms
+- Codeforces
+- CodeChef
+- AtCoder
+- Coding Ninjas
+- Additional coding platforms
 
 ---
 
 ## 🤖 AI-Powered Features
 
-Planned capabilities include:
+Future AI-powered capabilities include:
 
-* Automatic pattern detection
-* Topic classification
-* Solution explanations
-* Coding notes generation
-* Interview questions for solved problems
-* Complexity analysis
-* Personalized coding insights
+- AI-assisted pattern classification
+- Advanced topic classification
+- Solution explanations
+- Automatic coding notes generation
+- Interview questions for solved problems
+- Advanced complexity analysis
+- Personalized coding insights
+- Weak-topic identification
+- AI-powered learning recommendations
+
+These features aim to extend the existing local rule-based classification engine with more advanced AI capabilities.
 
 ---
 
@@ -552,13 +643,13 @@ Planned capabilities include:
 
 Future versions may include:
 
-* Detailed coding analytics
-* Platform comparison
-* Difficulty distribution
-* Pattern progress
-* Topic weaknesses
-* Language usage
-* Progress insights
+- Detailed coding analytics
+- Platform comparison
+- Difficulty distribution
+- Pattern progress
+- Topic weaknesses
+- Language usage
+- Progress insights
 
 ---
 
@@ -566,11 +657,11 @@ Future versions may include:
 
 Future versions will introduce intelligent revision capabilities including:
 
-* Revision reminders
-* Spaced repetition
-* Problem revisit tracking
-* Weak-topic identification
-* Personalized revision plans
+- Revision reminders
+- Spaced repetition
+- Problem revisit tracking
+- Weak-topic identification
+- Personalized revision plans
 
 ---
 
@@ -580,13 +671,13 @@ CodeSyncVault is evolving toward a complete developer portfolio system.
 
 Future capabilities include:
 
-* Coding profile
-* Solution showcase
-* Coding statistics
-* Activity heatmap
-* Achievements
-* GitHub integration
-* Portfolio generation
+- Coding profile
+- Solution showcase
+- Coding statistics
+- Activity heatmap
+- Achievements
+- GitHub integration
+- Portfolio generation
 
 ---
 
@@ -596,13 +687,13 @@ Contributions are welcome.
 
 You can contribute by:
 
-* Reporting bugs
-* Suggesting features
-* Improving documentation
-* Adding platform support
-* Improving detectors
-* Improving repository generation
-* Opening pull requests
+- Reporting bugs
+- Suggesting features
+- Improving documentation
+- Adding platform support
+- Improving detectors
+- Improving repository generation
+- Opening pull requests
 
 Create a feature branch:
 
@@ -650,14 +741,14 @@ CodeSyncVault aims to become a complete coding solution management and developer
 
 The long-term vision is to allow developers to:
 
-* Solve problems on their preferred coding platforms.
-* Automatically synchronize accepted solutions.
-* Organize solutions without manual effort.
-* Track coding progress.
-* Analyze strengths and weaknesses.
-* Maintain a professional coding portfolio.
-* Receive AI-powered insights.
-* Build a complete history of their coding journey.
+- Solve problems on their preferred coding platforms.
+- Automatically synchronize accepted solutions.
+- Organize solutions without manual effort.
+- Track coding progress.
+- Analyze strengths and weaknesses.
+- Maintain a professional coding portfolio.
+- Receive AI-powered insights.
+- Build a complete history of their coding journey.
 
 The goal is simple:
 
@@ -666,4 +757,3 @@ The goal is simple:
 ---
 
 Built with ❤️ for developers who love solving problems, not managing repositories.
-
